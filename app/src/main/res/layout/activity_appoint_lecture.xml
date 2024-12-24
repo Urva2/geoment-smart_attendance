@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#f5f5f5">
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Date (YYYY-MM-DD)"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Time (HH:MM)"
+        android:inputType="time"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:id="@+id/editTextLectureName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name of Lecture"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:id="@+id/editTextID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Lecture ID"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/btnAppoint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Appoint Lecture"
+        android:layout_marginTop="20dp"
+
+        android:textColor="#FFFFFF" />
+</LinearLayout>

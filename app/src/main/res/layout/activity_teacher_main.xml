@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     android:gravity="center"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/teacherWelcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome, Teacher!"
-        android:textSize="20sp"
-        android:layout_marginBottom="20dp"/>
+    android:background="#f5f5f5">
 
     <Button
-        android:id="@+id/takeAttendanceButton"
+        android:id="@+id/btnAppointLecture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Take Attendance"
-        android:layout_marginBottom="10dp"/>
+        android:text="Appoint Lecture"
+        android:layout_marginBottom="16dp"
+
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
     <Button
-        android:id="@+id/manageStudentsButton"
+        android:id="@+id/btnViewPastAttendance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Manage Students"/>
+        android:text="View Past Attendance"
+
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
 </LinearLayout>

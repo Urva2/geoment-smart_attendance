@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Attendance"
         tools:targetApi="31">
         <activity
+            android:name=".AppointLectureActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewAttendanceActivity"
+            android:exported="false" />
+        <activity
             android:name=".TeacherMainActivity"
             android:exported="false" />
         <activity

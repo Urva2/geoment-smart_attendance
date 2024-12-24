@@ -1,29 +1,69 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:padding="16dp">
 
+    <!-- Year Spinner -->
     <TextView
-        android:id="@+id/studentWelcomeText"
+        android:id="@+id/tv_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome, Student!"
-        android:textSize="20sp"
-        android:layout_marginBottom="20dp"/>
-
-    <Button
-        android:id="@+id/viewAttendanceButton"
+        android:text="Select Year"
+        android:textSize="16sp" />
+    <Spinner
+        android:id="@+id/spinner_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Attendance"
-        android:layout_marginBottom="10dp"/>
+        android:entries="@array/year_options"
+        android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/viewNotificationsButton"
+    <!-- Branch Spinner -->
+    <TextView
+        android:id="@+id/tv_branch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Branch"
+        android:textSize="16sp" />
+    <Spinner
+        android:id="@+id/spinner_branch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Notifications"/>
+        android:entries="@array/branch_options"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Name Input -->
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name"
+        android:inputType="textPersonName"
+        android:layout_marginBottom="16dp" />
+
+    <!-- PRN Input -->
+    <EditText
+        android:id="@+id/et_prn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter PRN"
+        android:inputType="number"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Student Book Lecture Button -->
+    <Button
+        android:id="@+id/btn_student_book_lecture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student Book Lecture" />
+
 </LinearLayout>
