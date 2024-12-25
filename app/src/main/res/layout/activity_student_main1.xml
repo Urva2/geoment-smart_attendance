@@ -7,7 +7,7 @@
 
     <!-- Year Spinner -->
     <TextView
-        android:id="@+id/tv_year"
+        android:id="@+id/year_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Year"
@@ -24,6 +24,7 @@
         android:id="@+id/tv_branch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="Select Branch"
         android:textSize="16sp" />
     <Spinner
@@ -60,10 +61,5 @@
         android:layout_marginBottom="16dp" />
 
     <!-- Student Book Lecture Button -->
-    <Button
-        android:id="@+id/btn_student_book_lecture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Student Book Lecture" />
 
 </LinearLayout>

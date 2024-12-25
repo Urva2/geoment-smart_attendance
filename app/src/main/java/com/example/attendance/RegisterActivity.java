@@ -13,9 +13,10 @@ import com.google.firebase.auth.FirebaseAuth;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText idEditText, passwordEditText;
-    private Spinner roleSpinner;
+
 
     private FirebaseAuth mAuth;
+    private Spinner roleSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         // On clicking the register button, register the user
         registerButton.setOnClickListener(v -> registerUser());
     }
+
 
     private void registerUser() {
         String id = idEditText.getText().toString().trim();
@@ -58,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Intent intent = new Intent(RegisterActivity.this, TeacherMainActivity.class);
                             startActivity(intent);
                         } else if (selectedRole.equals("Student")) {
-                            Intent intent = new Intent(RegisterActivity.this, StudentMainActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     } else {

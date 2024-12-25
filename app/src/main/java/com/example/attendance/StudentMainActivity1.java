@@ -1,5 +1,6 @@
 package com.example.attendance;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StudentMainActivity extends AppCompatActivity {
+public class StudentMainActivity1 extends AppCompatActivity {
 
     private Spinner spinnerYear, spinnerBranch;
     private EditText etName, etPrn;
@@ -26,7 +27,7 @@ public class StudentMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_main);
+        setContentView(R.layout.activity_student_main1);
 
         // Initialize Views
         spinnerYear = findViewById(R.id.spinner_year);
@@ -34,7 +35,7 @@ public class StudentMainActivity extends AppCompatActivity {
         etName = findViewById(R.id.et_name);
         etPrn = findViewById(R.id.et_prn);
         btnSubmit = findViewById(R.id.btn_submit);
-        btnStudentBookLecture = findViewById(R.id.btn_student_book_lecture);
+
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
@@ -49,46 +50,45 @@ public class StudentMainActivity extends AppCompatActivity {
                 String prn = etPrn.getText().toString().trim();
 
                 if (name.isEmpty() || prn.isEmpty()) {
-                    Toast.makeText(StudentMainActivity.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StudentMainActivity1.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Firestore Path: student_details/branch/year
-                String collectionPath = "student_details/" + branch + "/" + year;
+
 
                 // Create Data Map
                 Map<String, Object> studentData = new HashMap<>();
                 studentData.put("name", name);
                 studentData.put("prn", prn);
+                studentData.put("year", year);
+                studentData.put("branch", branch);
+
 
 
                 db.collection("studentdetails")
-                        .document("N235i5q6WTVbmtMATfeo").collection(branch).document(branch).collection(year).document(year)
+                        .document("studentdetails")
                         .set(studentData)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(StudentMainActivity.this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(StudentMainActivity1.this, "Data saved successfully!", Toast.LENGTH_SHORT).show();
                                 etName.setText("");
                                 etPrn.setText("");
+
+                                Intent intent=new Intent(StudentMainActivity1.this,StudentMainActivity2.class);
+                                startActivity(intent);
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(StudentMainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(StudentMainActivity1.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
             }
         });
 
-        // Handle Student Book Lecture Button
-        btnStudentBookLecture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(StudentMainActivity.this, "Feature under development", Toast.LENGTH_SHORT).show();
-                // Add intent here for the next activity when implemented
-            }
-        });
+
     }
 }

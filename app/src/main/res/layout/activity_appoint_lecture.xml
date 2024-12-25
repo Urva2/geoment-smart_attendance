@@ -37,12 +37,27 @@
         android:hint="Enter Lecture ID"
         android:layout_marginTop="10dp" />
 
+    <!-- Spinner for Branch -->
+    <Spinner
+        android:id="@+id/spinnerBranch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/branch_options"
+        android:layout_marginTop="10dp" />
+
+    <!-- Spinner for Year -->
+    <Spinner
+        android:id="@+id/spinnerYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/year_options"
+        android:layout_marginTop="10dp" />
+
     <Button
         android:id="@+id/btnAppoint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Appoint Lecture"
         android:layout_marginTop="20dp"
-
         android:textColor="#FFFFFF" />
 </LinearLayout>

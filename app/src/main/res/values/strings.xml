@@ -6,16 +6,16 @@
     </string-array>
 
 
-        <string-array name="year_options">
-            <item>FY</item>
-            <item>SY</item>
-            <item>TY</item>
-        </string-array>
+    <string-array name="year_options">
+        <item>FY</item>
+        <item>SY</item>
+        <item>TY</item>
+    </string-array>
 
-        <string-array name="branch_options">
-            <item>IT</item>
-            <item>CS</item>
-        </string-array>
+    <string-array name="branch_options">
+        <item>IT</item>
+        <item>CS</item>
+    </string-array>
 
 
 </resources>

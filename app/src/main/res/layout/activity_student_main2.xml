@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- PRN EditText -->
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/prnEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter PRN"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+        android:padding="16dp"/>
+
+    <!-- Book Lecture Button -->
+    <Button
+        android:id="@+id/bookLectureButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Book Lecture"
+        app:layout_constraintTop_toBottomOf="@id/prnEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:padding="16dp"/>
+
+    <!-- TextView to display fetched appointment details -->
+    <TextView
+        android:id="@+id/detailsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Appointment Details will be shown here"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/bookLectureButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"/>
+
+    <!-- Next Step Button (Under Development) -->
+    <Button
+        android:id="@+id/nextStepButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="384dp"
+        android:padding="16dp"
+        android:text="Next Step"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detailsTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
