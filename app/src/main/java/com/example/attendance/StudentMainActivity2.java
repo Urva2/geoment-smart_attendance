@@ -1,4 +1,6 @@
 package com.example.attendance;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class StudentMainActivity2 extends AppCompatActivity {
 
@@ -19,6 +20,9 @@ public class StudentMainActivity2 extends AppCompatActivity {
     private Button bookLectureButton;
     private TextView detailsTextView;
     private Button nextStepButton;
+    private EditText cmpid;
+
+    private String fetchedId; // Variable to store the fetched ID from the database
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,9 @@ public class StudentMainActivity2 extends AppCompatActivity {
         bookLectureButton = findViewById(R.id.bookLectureButton);
         detailsTextView = findViewById(R.id.detailsTextView);
         nextStepButton = findViewById(R.id.nextStepButton);
+        cmpid = findViewById(R.id.cmpid);
+
+        nextStepButton.setEnabled(false); // Initially disable the Next Step button
 
         // Set onClickListener for the Book Lecture button
         bookLectureButton.setOnClickListener(v -> {
@@ -40,9 +47,9 @@ public class StudentMainActivity2 extends AppCompatActivity {
                 return;
             }
 
-            // Fetch the Year and Branch from the student details collection group
+            // Fetch the Year and Branch from the student details collection
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("studentdetails")  // Using collectionGroup to access all student details
+            db.collection("studentdetails")
                     .whereEqualTo("prn", prn)
                     .get()
                     .addOnSuccessListener(querySnapshot -> {
@@ -63,9 +70,23 @@ public class StudentMainActivity2 extends AppCompatActivity {
                     });
         });
 
-        // Set onClickListener for Next Step button
+        // Set onClickListener for the Next Step button
         nextStepButton.setOnClickListener(v -> {
-            Toast.makeText(StudentMainActivity2.this, "This feature is under development", Toast.LENGTH_SHORT).show();
+            String enteredId = cmpid.getText().toString().trim();
+
+            if (TextUtils.isEmpty(enteredId)) {
+                Toast.makeText(StudentMainActivity2.this, "Please enter your ID", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (enteredId.equals(fetchedId)) {
+                Toast.makeText(StudentMainActivity2.this, "ID Matched! Proceeding...", Toast.LENGTH_SHORT).show();
+                // Navigate to the next activity
+                Intent intent = new Intent(StudentMainActivity2.this, AttendanceBookingActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(StudentMainActivity2.this, "ID does not match!", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -73,8 +94,7 @@ public class StudentMainActivity2 extends AppCompatActivity {
     private void fetchAppointmentDetails(String year, String branch) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Using collectionGroup to access all appointment details collections
-        db.collection("appointmentdetails")  // Using collectionGroup for appointment details
+        db.collection("appointmentdetails")
                 .whereEqualTo("year", year)
                 .whereEqualTo("branch", branch)
                 .get()
@@ -88,17 +108,19 @@ public class StudentMainActivity2 extends AppCompatActivity {
                             String date = document.getString("date");
                             String time = document.getString("time");
                             String name = document.getString("name");
-                            String id = document.getString("id");
+                            fetchedId = document.getString("id"); // Store the fetched ID
 
                             // Append each appointment detail to the StringBuilder
                             details.append("Date: ").append(date).append("\n")
                                     .append("Time: ").append(time).append("\n")
                                     .append("Name: ").append(name).append("\n")
-                                    .append("ID: ").append(id).append("\n\n");
+                                    .append("ID: ").append(fetchedId).append("\n\n");
                         }
 
                         // Display the appointment details in the TextView
                         detailsTextView.setText(details.toString());
+                        cmpid.setVisibility(View.VISIBLE); // Show the ID input field
+                        nextStepButton.setEnabled(true); // Enable the Next Step button for ID comparison
                     }
                 })
                 .addOnFailureListener(e -> {
