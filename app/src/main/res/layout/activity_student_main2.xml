@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -9,11 +9,7 @@
         android:id="@+id/prnEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter PRN"
-        android:inputType="text"
-        android:layout_marginTop="40dp"
-        android:padding="16dp"
-        android:layout_alignParentTop="true" />
+        android:hint="Enter PRN" />
 
     <!-- Book Lecture Button -->
     <Button
@@ -21,42 +17,56 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/prnEditText"
-        android:layout_marginTop="20dp"
-        android:text="Book Lecture"
-        android:padding="16dp" />
+        android:layout_marginTop="8dp"
+        android:text="Check PRN" />
 
-    <!-- TextView to display fetched appointment details -->
+    <!-- Subject Name EditText -->
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bookLectureButton"
+        android:layout_marginTop="8dp"
+        android:hint="Enter Subject Name"
+        android:visibility="gone" />
+
+    <!-- Subject ID EditText -->
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText2"
+        android:layout_marginTop="8dp"
+        android:hint="Enter Subject ID"
+        android:visibility="gone" />
+
+    <!-- Fetch Lecture Details Button -->
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText3"
+        android:layout_marginTop="8dp"
+        android:text="Show Lecture Details"
+        android:visibility="gone" />
+
+    <!-- Details TextView -->
     <TextView
         android:id="@+id/detailsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bookLectureButton"
-        android:layout_marginTop="40dp"
-        android:text="Appointment Details will be shown here"
+        android:layout_below="@id/button2"
+        android:layout_marginTop="8dp"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:padding="16dp" />
+        android:textColor="#000" />
 
-    <!-- ID EditText for user input -->
-    <EditText
-        android:id="@+id/cmpid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detailsTextView"
-        android:layout_marginTop="20dp"
-        android:hint="Enter Your ID"
-        android:inputType="text"
-        android:padding="16dp"
-        android:visibility="gone" />
-
-    <!-- Next Step Button -->
+    <!-- Book Button -->
     <Button
         android:id="@+id/nextStepButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cmpid"
-        android:layout_marginTop="40dp"
-        android:text="Next Step"
-        android:padding="16dp"
-        android:enabled="false" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:text="Book"
+        />
 </RelativeLayout>

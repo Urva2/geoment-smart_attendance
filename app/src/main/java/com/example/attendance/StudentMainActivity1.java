@@ -2,13 +2,16 @@ package com.example.attendance;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,7 +23,7 @@ public class StudentMainActivity1 extends AppCompatActivity {
 
     private Spinner spinnerYear, spinnerBranch;
     private EditText etName, etPrn;
-    private Button btnSubmit, btnStudentBookLecture;
+    private Button btnSubmit;
 
     private FirebaseFirestore db;
 
@@ -36,7 +39,6 @@ public class StudentMainActivity1 extends AppCompatActivity {
         etPrn = findViewById(R.id.et_prn);
         btnSubmit = findViewById(R.id.btn_submit);
 
-
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
@@ -49,12 +51,10 @@ public class StudentMainActivity1 extends AppCompatActivity {
                 String name = etName.getText().toString().trim();
                 String prn = etPrn.getText().toString().trim();
 
-                if (name.isEmpty() || prn.isEmpty()) {
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(prn)) {
                     Toast.makeText(StudentMainActivity1.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
 
                 // Create Data Map
                 Map<String, Object> studentData = new HashMap<>();
@@ -63,11 +63,12 @@ public class StudentMainActivity1 extends AppCompatActivity {
                 studentData.put("year", year);
                 studentData.put("branch", branch);
 
-
-
-                db.collection("studentdetails")
-                        .document("studentdetails")
-                        .set(studentData)
+                // Save data in Firestore
+                db.collection("studentdetails") // Parent collection
+                        .document(branch) // Branch (e.g., "IT")
+                        .collection(year) // Year (e.g., "FY")
+                        .document(prn) // PRN as the document ID
+                        .set(studentData) // Set the student data
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -75,9 +76,9 @@ public class StudentMainActivity1 extends AppCompatActivity {
                                 etName.setText("");
                                 etPrn.setText("");
 
+                                // You can navigate to another activity if needed
                                 Intent intent=new Intent(StudentMainActivity1.this,StudentMainActivity2.class);
                                 startActivity(intent);
-
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -88,7 +89,5 @@ public class StudentMainActivity1 extends AppCompatActivity {
                         });
             }
         });
-
-
     }
 }

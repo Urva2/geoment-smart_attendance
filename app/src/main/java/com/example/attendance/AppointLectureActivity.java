@@ -1,5 +1,6 @@
 package com.example.attendance;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -75,13 +76,19 @@ public class AppointLectureActivity extends AppCompatActivity {
                 lectureData.put("year", year);
 
 
+
                 // Store the lecture data in the Firestore path
-                firestore.collection("appointmentdetails")
-                        .document("appointmentdetails")  // This is a specific document under "appointmentdetails"// Document for the selected year
-                        .set(lectureData)                // Store the lecture data in that specific path
+                firestore.collection("appointmentdetails").document(branch) // Branch (e.g., "IT")
+                        .collection(year) // Year (e.g., "FY")
+                        .document(lectureName)
+                        .collection(id).document(id)
+                        .set(lectureData)             // Store the lecture data in that specific path
                         .addOnSuccessListener(documentReference -> {
                             Toast.makeText(AppointLectureActivity.this, "Lecture appointed successfully!", Toast.LENGTH_SHORT).show();
                             clearFields();
+
+                            Intent intent=new Intent(AppointLectureActivity.this,TeacherMainActivity.class);
+                            startActivity(intent);
                         })
                         .addOnFailureListener(e -> {
                             Toast.makeText(AppointLectureActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

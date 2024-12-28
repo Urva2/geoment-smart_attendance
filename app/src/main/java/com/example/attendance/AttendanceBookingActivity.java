@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,11 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.ktx.Firebase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AttendanceBookingActivity extends AppCompatActivity {
 
@@ -26,6 +32,9 @@ public class AttendanceBookingActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private Button bookAttendanceButton;
     private CheckBox bookAttendanceCheckBox;
+    private FirebaseFirestore firestore;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +92,8 @@ public class AttendanceBookingActivity extends AppCompatActivity {
                             double longitude = location.getLongitude();
 
                             // For example, let's assume the predetermined location is at this latitude and longitude
-                            double attendanceLatitude = 22.2786278;  // Replace with your predefined latitude
-                            double attendanceLongitude = 73.2381245;  // Replace with your predefined longitude
+                            double attendanceLatitude =22.2917628;  // Replace with your predefined latitude
+                            double attendanceLongitude =  73.1994581;  // Replace with your predefined longitude
                             double radius = 100;  // In meters
 
                             // Calculate the distance between the current location and the attendance location
@@ -93,6 +102,30 @@ public class AttendanceBookingActivity extends AppCompatActivity {
 
                             // Check if the distance is less than or equal to the radius
                             if (distance[0] <= radius) {
+
+                                //inserting data into database if above condition is true and entering p into attend field of firestore database
+                                Intent intent1=getIntent();
+                                 String getprn = intent1.getStringExtra("prn");
+
+                                firestore = FirebaseFirestore.getInstance();
+                                Map<String, Object> lectureData = new HashMap<>();
+                                lectureData.put("attend","P");
+                                lectureData.put("prn",getprn);
+
+
+
+
+
+                                firestore.collection("attendance")
+                                        .document("attendance")  // This is a specific document under "appointmentdetails"// Document for the selected year
+                                        .set(lectureData)                // Store the lecture data in that specific path
+                                        .addOnSuccessListener(documentReference -> {
+
+                                        })
+                                        .addOnFailureListener(e -> {
+                                        });
+                            }
+
                                 // Attendance is within the radius
                                 Toast.makeText(this, "Attendance booked successfully!", Toast.LENGTH_SHORT).show();
 
@@ -121,8 +154,9 @@ public class AttendanceBookingActivity extends AppCompatActivity {
                                     }
                                 },2000);
                             }
-                        }
+
                     });
+
         } else {
             // Permission is not granted, so request the permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);

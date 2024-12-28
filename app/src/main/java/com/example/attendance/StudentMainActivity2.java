@@ -2,7 +2,8 @@ package com.example.attendance;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,117 +15,176 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class StudentMainActivity2 extends AppCompatActivity {
 
-    private EditText prnEditText;
-    private Button bookLectureButton;
+    // Views
+    private EditText prnEditText, subjectNameEditText, subjectIdEditText;
     private TextView detailsTextView;
-    private Button nextStepButton;
-    private EditText cmpid;
+    private Button bookLectureButton, fetchLectureDetailsButton, nextStepButton;
 
-    private String fetchedId; // Variable to store the fetched ID from the database
+    // Firestore
+    private FirebaseFirestore db;
+
+    // Global variables for the entire package
+    public static String branch = "";
+    public static String year = "";
+    public static String subjectName = "";
+    public static String subjectID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main2);
 
-        // Initialize UI elements
+        // Initialize views
         prnEditText = findViewById(R.id.prnEditText);
-        bookLectureButton = findViewById(R.id.bookLectureButton);
+        subjectNameEditText = findViewById(R.id.editText2);
+        subjectIdEditText = findViewById(R.id.editText3);
         detailsTextView = findViewById(R.id.detailsTextView);
+        bookLectureButton = findViewById(R.id.bookLectureButton);
+        fetchLectureDetailsButton = findViewById(R.id.button2);
         nextStepButton = findViewById(R.id.nextStepButton);
-        cmpid = findViewById(R.id.cmpid);
 
-        nextStepButton.setEnabled(false); // Initially disable the Next Step button
+        // Hide unnecessary fields initially
+        subjectNameEditText.setVisibility(View.GONE);
+        subjectIdEditText.setVisibility(View.GONE);
+        fetchLectureDetailsButton.setVisibility(View.GONE);
 
-        // Set onClickListener for the Book Lecture button
+
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+
+        // Button listeners
         bookLectureButton.setOnClickListener(v -> {
             String prn = prnEditText.getText().toString().trim();
-
-            if (TextUtils.isEmpty(prn)) {
-                Toast.makeText(StudentMainActivity2.this, "Please enter PRN", Toast.LENGTH_SHORT).show();
-                return;
+            if (!prn.isEmpty()) {
+                fetchStudentDetails(prn);
+            } else {
+                Toast.makeText(this, "Please enter PRN", Toast.LENGTH_SHORT).show();
             }
-
-            // Fetch the Year and Branch from the student details collection
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("studentdetails")
-                    .whereEqualTo("prn", prn)
-                    .get()
-                    .addOnSuccessListener(querySnapshot -> {
-                        if (querySnapshot.isEmpty()) {
-                            Toast.makeText(StudentMainActivity2.this, "No student found with this PRN", Toast.LENGTH_SHORT).show();
-                        } else {
-                            for (QueryDocumentSnapshot document : querySnapshot) {
-                                String year = document.getString("year");
-                                String branch = document.getString("branch");
-
-                                // Use these values to fetch appointment details
-                                fetchAppointmentDetails(year, branch);
-                            }
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(StudentMainActivity2.this, "Error fetching student details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
         });
 
-        // Set onClickListener for the Next Step button
-        nextStepButton.setOnClickListener(v -> {
-            String enteredId = cmpid.getText().toString().trim();
+        fetchLectureDetailsButton.setOnClickListener(v -> {
+            // Get values from EditTexts and assign them to global variables
+            subjectName = subjectNameEditText.getText().toString().trim();
+            subjectID = subjectIdEditText.getText().toString().trim();
 
-            if (TextUtils.isEmpty(enteredId)) {
-                Toast.makeText(StudentMainActivity2.this, "Please enter your ID", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (enteredId.equals(fetchedId)) {
-                Toast.makeText(StudentMainActivity2.this, "ID Matched! Proceeding...", Toast.LENGTH_SHORT).show();
-                // Navigate to the next activity
-                Intent intent = new Intent(StudentMainActivity2.this, AttendanceBookingActivity.class);
-                startActivity(intent);
+            if (subjectName.isEmpty() || subjectID.isEmpty()) {
+                Toast.makeText(this, "Please enter subject name and ID", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(StudentMainActivity2.this, "ID does not match!", Toast.LENGTH_SHORT).show();
+                fetchAppointmentDetails(); // Proceed to fetch lecture details
             }
+        });
+
+        nextStepButton.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentMainActivity2.this, AttendanceBookingActivity.class);
+            startActivity(intent);
         });
     }
 
-    // Method to fetch appointment details based on year and branch
-    private void fetchAppointmentDetails(String year, String branch) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("appointmentdetails")
-                .whereEqualTo("year", year)
-                .whereEqualTo("branch", branch)
+    private void fetchStudentDetails(String prn) {
+        db.collection("studentdetails")
                 .get()
+                .addOnSuccessListener(branchSnapshots -> {
+                    boolean[] prnFound = {false};
+
+                    for (QueryDocumentSnapshot branchDoc : branchSnapshots) {
+                        String branchName = branchDoc.getId();
+
+                        for (String yearOption : getResources().getStringArray(R.array.year_options)) {
+                            db.collection("studentdetails").document(branchName)
+                                    .collection(yearOption)
+                                    .whereEqualTo("prn", prn)
+                                    .get()
+                                    .addOnSuccessListener(yearSnapshots -> {
+                                        if (!yearSnapshots.isEmpty() && !prnFound[0]) {
+                                            prnFound[0] = true;
+
+                                            for (QueryDocumentSnapshot studentDoc : yearSnapshots) {
+                                                // Fetch and store branch and year
+                                                branch = studentDoc.getString("branch");
+                                                year = studentDoc.getString("year");
+
+                                                Toast.makeText(
+                                                        StudentMainActivity2.this,
+                                                        "Found student in " + year + " of " + branch,
+                                                        Toast.LENGTH_SHORT
+                                                ).show();
+
+                                                // Show additional fields
+                                                subjectNameEditText.setVisibility(View.VISIBLE);
+                                                subjectIdEditText.setVisibility(View.VISIBLE);
+                                                fetchLectureDetailsButton.setVisibility(View.VISIBLE);
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> Log.e("FirestoreError", "Error fetching year: " + e.getMessage()));
+                        }
+                    }
+
+                    new Handler().postDelayed(() -> {
+                        if (!prnFound[0]) {
+                            detailsTextView.setText("PRN not found in any branch or year.");
+                        }
+                    }, 2000);
+                })
+                .addOnFailureListener(e -> Log.e("FirestoreError", "Error fetching branches: " + e.getMessage()));
+    }
+
+    private void fetchAppointmentDetails() {
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        // Use global variables: branch, year, subjectName, subjectID
+        db.collection("appointmentdetails")
+                .document(branch)
+                .collection(year)
+                .document(subjectName)
+                .collection(subjectID)
+                .get() // Fetch all documents in this collection
                 .addOnSuccessListener(querySnapshot -> {
-                    if (querySnapshot.isEmpty()) {
-                        detailsTextView.setText("No appointments found for this year and branch.");
-                    } else {
-                        StringBuilder details = new StringBuilder();
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        StringBuilder appointmentDetails = new StringBuilder();
 
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            String date = document.getString("date");
-                            String time = document.getString("time");
-                            String name = document.getString("name");
-                            fetchedId = document.getString("id"); // Store the fetched ID
+                        // Loop through all documents in the query result
+                        for (QueryDocumentSnapshot appointmentDoc : querySnapshot) {
+                            // Check if the document matches today's date and subjectID
+                            String fetchedDate = appointmentDoc.getString("date");
+                            String fetchedId = appointmentDoc.getString("id");
 
-                            // Append each appointment detail to the StringBuilder
-                            details.append("Date: ").append(date).append("\n")
-                                    .append("Time: ").append(time).append("\n")
-                                    .append("Name: ").append(name).append("\n")
-                                    .append("ID: ").append(fetchedId).append("\n\n");
+                            if (today.equals(fetchedDate) && subjectID.equals(fetchedId)) {
+                                String subject = appointmentDoc.getString("namelec");
+                                String date = appointmentDoc.getString("date");
+                                String time = appointmentDoc.getString("time");
+                                String id = appointmentDoc.getString("id");
+
+                                // Append details to the StringBuilder
+                                appointmentDetails.append("Subject: ").append(subject)
+                                        .append("\nDate: ").append(date)
+                                        .append("\nTime: ").append(time)
+                                        .append("\nLecture ID: ").append(id).append("\n\n");
+                            }
                         }
 
-                        // Display the appointment details in the TextView
-                        detailsTextView.setText(details.toString());
-                        cmpid.setVisibility(View.VISIBLE); // Show the ID input field
-                        nextStepButton.setEnabled(true); // Enable the Next Step button for ID comparison
+                        if (appointmentDetails.length() > 0) {
+                            // Display the details in your TextView
+                            detailsTextView.setText(appointmentDetails.toString());
+                        } else {
+                            // No matching appointments found
+                            detailsTextView.setText("No matching appointments found for today.");
+                        }
+                    } else {
+                        // Handle case where no documents are found
+                        detailsTextView.setText("No appointments found for the specified path.");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    detailsTextView.setText("Error fetching appointment details: " + e.getMessage());
+                    Log.e("FirestoreError", "Error fetching appointments: " + e.getMessage());
+                    detailsTextView.setText("Error fetching appointments. Please try again.");
                 });
     }
+
 }
