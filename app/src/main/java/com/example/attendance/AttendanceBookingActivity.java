@@ -33,13 +33,23 @@ public class AttendanceBookingActivity extends AppCompatActivity {
     private Button bookAttendanceButton;
     private CheckBox bookAttendanceCheckBox;
     private FirebaseFirestore firestore;
-
+    String prn,branch,year,id,sub;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance_booking);
+        // Retrieve the passed data
+        prn = getIntent().getStringExtra("prn");
+        branch = getIntent().getStringExtra("branch");
+        year = getIntent().getStringExtra("year");
+        id = getIntent().getStringExtra("id");
+        sub= getIntent().getStringExtra("sub");
+        // Use the values as needed
+        Toast.makeText(this, "PRN: " + prn + ", Branch: " + branch + ", Year: " + year + ", ID: " + id + ", SUB:" + sub, Toast.LENGTH_LONG).show();
+
+
 
         // Initialize views
         bookAttendanceButton = findViewById(R.id.bookAttendanceButton);
@@ -92,8 +102,8 @@ public class AttendanceBookingActivity extends AppCompatActivity {
                             double longitude = location.getLongitude();
 
                             // For example, let's assume the predetermined location is at this latitude and longitude
-                            double attendanceLatitude =22.2917628;  // Replace with your predefined latitude
-                            double attendanceLongitude =  73.1994581;  // Replace with your predefined longitude
+                            double attendanceLatitude =22.3235482;  // Replace with your predefined latitude
+                            double attendanceLongitude =  73.1795980;  // Replace with your predefined longitude
                             double radius = 100;  // In meters
 
                             // Calculate the distance between the current location and the attendance location
@@ -104,21 +114,21 @@ public class AttendanceBookingActivity extends AppCompatActivity {
                             if (distance[0] <= radius) {
 
                                 //inserting data into database if above condition is true and entering p into attend field of firestore database
-                                Intent intent1=getIntent();
-                                 String getprn = intent1.getStringExtra("prn");
+                              //  Intent intent1=getIntent();
+                                // String getprn = intent1.getStringExtra("prn");
 
                                 firestore = FirebaseFirestore.getInstance();
                                 Map<String, Object> lectureData = new HashMap<>();
                                 lectureData.put("attend","P");
-                                lectureData.put("prn",getprn);
+                                lectureData.put("prn",prn);
 
-
-
-
-
-                                firestore.collection("attendance")
-                                        .document("attendance")  // This is a specific document under "appointmentdetails"// Document for the selected year
-                                        .set(lectureData)                // Store the lecture data in that specific path
+                                firestore.collection("attendancedetails")
+                                        .document(branch)  // This is a specific document under "appointmentdetails"// Document for the selected year
+                                        .collection(year)
+                                        .document(sub)
+                                        .collection(id)
+                                        .document(id)
+                                        .set(lectureData)// Store the lecture data in that specific path
                                         .addOnSuccessListener(documentReference -> {
 
                                         })
@@ -142,8 +152,25 @@ public class AttendanceBookingActivity extends AppCompatActivity {
                                 // For example, call a method to store attendance in Firestore
                                 // saveAttendanceToFirestore(userId, groupId, subject);
                             } else {
+                            firestore = FirebaseFirestore.getInstance();
+                            Map<String, Object> lectureData = new HashMap<>();
+                            lectureData.put("attend","A");
+                            lectureData.put("prn",prn);
 
+                            firestore.collection("attendancedetails")
+                                    .document(branch)  // This is a specific document under "appointmentdetails"// Document for the selected year
+                                    .collection(year)
+                                    .document(sub)
+                                    .collection(id)
+                                    .document(prn)
+                                    .set(lectureData)// Store the lecture data in that specific path
+                                    .addOnSuccessListener(documentReference -> {
+
+                                    })
+                                    .addOnFailureListener(e -> {
+                                    });
                                 Toast.makeText(this, "You are outside the attendance area. Attendance not booked.", Toast.LENGTH_SHORT).show();
+
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override

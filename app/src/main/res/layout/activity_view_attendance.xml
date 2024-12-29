@@ -1,25 +1,60 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".ViewAttendanceActivity">
 
+    <!-- Branch EditText -->
     <EditText
-        android:id="@+id/editTextId"
+        android:id="@+id/branchEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter ID"
-        android:inputType="text" />
+        android:hint="Enter Branch"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp" />
 
+    <!-- Year EditText -->
+    <EditText
+        android:id="@+id/yearEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Year"
+        android:layout_below="@id/branchEditText"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Subject EditText -->
+    <EditText
+        android:id="@+id/subjectEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Subject"
+        android:layout_below="@id/yearEditText"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Subject ID EditText -->
+    <EditText
+        android:id="@+id/subjectIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Subject ID"
+        android:layout_below="@id/subjectEditText"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Submit Button -->
     <Button
-        android:id="@+id/buttonShow"
+        android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show" />
+        android:text="View Attendance"
+        android:layout_below="@id/subjectIdEditText" />
 
+    <!-- RecyclerView for displaying attendance -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/attendanceRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/submitButton"
+        android:layout_marginTop="16dp"/>
+</RelativeLayout>

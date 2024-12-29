@@ -5,110 +5,117 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAttendanceActivity extends AppCompatActivity {
 
-    private EditText editTextId;
-    private Button buttonShow;
-    private RecyclerView recyclerView;
-    private FirebaseFirestore firestore;
-    private List<Student> studentList;
-    private StudentAdapter adapter;
-
-    private String selectedYear;
-    private String selectedBranch;
+    private EditText branchEditText, yearEditText, subjectEditText, subjectIdEditText;
+    private Button submitButton;
+    private RecyclerView attendanceRecyclerView;
+    private FirebaseFirestore db;
+    private AttendanceAdapter attendanceAdapter;
+    private List<Attendance> attendanceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_attendance);
 
-        // Initialize Views
-        editTextId = findViewById(R.id.editTextId);
-        buttonShow = findViewById(R.id.buttonShow);
-        recyclerView = findViewById(R.id.recyclerView);
-
         // Initialize Firestore
-        firestore = FirebaseFirestore.getInstance();
-        studentList = new ArrayList<>();
-        adapter = new StudentAdapter(studentList);
+        db = FirebaseFirestore.getInstance();
 
-        // Set up RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        // Initialize Views
+        branchEditText = findViewById(R.id.branchEditText);
+        yearEditText = findViewById(R.id.yearEditText);
+        subjectEditText = findViewById(R.id.subjectEditText);
+        subjectIdEditText = findViewById(R.id.subjectIdEditText);
+        submitButton = findViewById(R.id.submitButton);
+        attendanceRecyclerView = findViewById(R.id.attendanceRecyclerView);
 
-        // Handle "Show" Button Click
-        buttonShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String enteredId = editTextId.getText().toString().trim();
-                if (enteredId.isEmpty()) {
-                    Toast.makeText(ViewAttendanceActivity.this, "Enter a valid ID", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                fetchAppointmentDetails(enteredId);
+        // Initialize RecyclerView
+        attendanceList = new ArrayList<>();
+        attendanceAdapter = new AttendanceAdapter(attendanceList);
+        attendanceRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        attendanceRecyclerView.setAdapter(attendanceAdapter);
+
+        // Submit Button Click Listener
+        submitButton.setOnClickListener(view -> {
+            String branch = branchEditText.getText().toString().trim();
+            String year = yearEditText.getText().toString().trim();
+            String subject = subjectEditText.getText().toString().trim();
+            String subjectId = subjectIdEditText.getText().toString().trim();
+
+            if (branch.isEmpty() || year.isEmpty() || subject.isEmpty() || subjectId.isEmpty()) {
+                Toast.makeText(ViewAttendanceActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            } else {
+                fetchAttendanceData(branch, year, subject, subjectId);
             }
         });
     }
 
-    private void fetchAppointmentDetails(String enteredId) {
-        firestore.collection("appointmentdetails")
-                .whereEqualTo("id", enteredId)
+    private void fetchAttendanceData(String branch, String year, String subject, String subjectId) {
+        // Step 1: Fetch all PRNs and Names from studentdetails collection
+        db.collection("studentdetails")
+                .document(branch)
+                .collection(year)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            selectedYear = document.getString("year");
-                            selectedBranch = document.getString("branch");
-                            fetchStudentDetails();
-                            break;
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<String> prns = new ArrayList<>();
+                        List<String> names = new ArrayList<>();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            prns.add(document.getId()); // PRN is the document ID
+                            names.add(document.getString("name")); // Name field
                         }
+
+                        // Step 2: Fetch attendance data for each PRN from attendancedetails collection
+                        fetchAttendanceDetails(prns, names, branch, year, subject, subjectId);
                     } else {
-                        Toast.makeText(ViewAttendanceActivity.this, "No matching ID found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewAttendanceActivity.this, "Error fetching student details", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(e -> Toast.makeText(ViewAttendanceActivity.this, "Error fetching data", Toast.LENGTH_SHORT).show());
+                });
     }
 
+    private void fetchAttendanceDetails(List<String> prns, List<String> names, String branch, String year, String subject, String subjectId) {
+        attendanceList.clear(); // Clear any previous data
 
-    private void fetchStudentDetails() {
-        firestore.collection("studentdetails")
-                .whereEqualTo("year", selectedYear)
-                .whereEqualTo("branch", selectedBranch)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    studentList.clear();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        String name = document.getString("name");
-                        String prn = document.getString("prn");
-                        studentList.add(new Student(name, prn, "A")); // Default to Absent
-                    }
-                    checkAttendance();
-                })
-                .addOnFailureListener(e -> Toast.makeText(ViewAttendanceActivity.this, "Error fetching student details", Toast.LENGTH_SHORT).show());
-    }
+        for (int i = 0; i < prns.size(); i++) {
+            String prn = prns.get(i);
+            String name = names.get(i);
 
-    private void checkAttendance() {
-        for (int i = 0; i < studentList.size(); i++) {
-            final int index = i;
-            String prn = studentList.get(i).getPrn();
-            firestore.collection("attendance")
-                    .whereEqualTo("prn", prn)
+            db.collection("attendancedetails")
+                    .document(branch)
+                    .collection(year)
+                    .document(subject)
+                    .collection(subjectId)
+                    .document(prn) // Fetch the document for the specific PRN
                     .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            studentList.get(index).setAttendance("P"); // Mark as Present
+                    .addOnCompleteListener(task -> {
+                        String attendanceStatus = "A"; // Default attendance is "A"
+                        if (task.isSuccessful() && task.getResult().exists()) {
+                            String attend = task.getResult().getString("attend");
+                            if ("P".equals(attend)) {
+                                attendanceStatus = "P";
+                            }
                         }
-                        adapter.notifyDataSetChanged();
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(ViewAttendanceActivity.this, "Error checking attendance", Toast.LENGTH_SHORT).show());
+
+                        // Add the data to the list
+                        attendanceList.add(new Attendance(prn, name, attendanceStatus));
+
+                        // Notify the adapter to update the RecyclerView
+                        attendanceAdapter.notifyDataSetChanged();
+                    });
         }
     }
 }

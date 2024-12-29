@@ -82,6 +82,11 @@ public class StudentMainActivity2 extends AppCompatActivity {
 
         nextStepButton.setOnClickListener(v -> {
             Intent intent = new Intent(StudentMainActivity2.this, AttendanceBookingActivity.class);
+            intent.putExtra("prn", prnEditText.getText().toString().trim());
+            intent.putExtra("branch", branch);
+            intent.putExtra("year", year);
+            intent.putExtra("id", subjectID);
+            intent.putExtra("sub",subjectName);
             startActivity(intent);
         });
     }
