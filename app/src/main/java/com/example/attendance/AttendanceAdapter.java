@@ -43,7 +43,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             super(itemView);
             prnTextView = itemView.findViewById(R.id.prnTextView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
-            attendanceStatusTextView = itemView.findViewById(R.id.attendanceStatusTextView);
+            attendanceStatusTextView = itemView.findViewById(R.id.attendanceTextView);
         }
     }
 }

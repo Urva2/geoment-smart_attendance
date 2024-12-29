@@ -3,26 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@drawable/table_cell_border"
+    android:layout_marginBottom="2dp"
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/prnTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="PRN" />
+<TextView
+android:id="@+id/prnTextView"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:layout_weight="1"
+android:text="PRN"
+android:gravity="center" />
 
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Name" />
+<TextView
+android:id="@+id/nameTextView"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:layout_weight="2"
+android:text="Name"
+android:gravity="center" />
 
-    <TextView
-        android:id="@+id/attendanceStatusTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Attendance" />
+<TextView
+android:id="@+id/attendanceTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="P/A"
+android:gravity="center" />
 </LinearLayout>
