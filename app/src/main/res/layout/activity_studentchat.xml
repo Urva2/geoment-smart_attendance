@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Input fields for lecture ID, PRN, and Message -->
+    <EditText
+        android:id="@+id/lectureIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Lecture ID"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/prnEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your PRN"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/messageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your message"
+        android:inputType="textMultiLine" />
+
+    <!-- Button to send message -->
+    <Button
+        android:id="@+id/sendMessageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Message"
+        android:layout_gravity="center_horizontal" />
+
+    <!-- LinearLayout to display messages -->
+    <LinearLayout
+        android:id="@+id/messageListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

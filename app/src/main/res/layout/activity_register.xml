@@ -41,7 +41,20 @@
         android:entries="@array/role_array"
         />
 
-    <!-- Submit Button -->
+    <!-- Fingerprint Register Button (Initially Invisible) -->
+    <Button
+        android:id="@+id/fingerprintRegisterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register Fingerprint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/roleSpinner"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:visibility="gone"/>
+
+    <!-- Submit Button (Initially Invisible for Student) -->
     <Button
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
@@ -49,8 +62,9 @@
         android:text="Submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/roleSpinner"
+        app:layout_constraintTop_toBottomOf="@id/fingerprintRegisterButton"
         android:layout_marginTop="16dp"
-        android:padding="12dp"/>
+        android:padding="12dp"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(new Intent(LoginActivity.this, StudentMainActivity1.class));
                                 } else {
                                     // Navigate to Student Main Activity 2
-                                    startActivity(new Intent(LoginActivity.this, StudentMainActivity2.class));
+                                    startActivity(new Intent(LoginActivity.this, StudentMainActivity.class));
                                 }
                             } else if ("Teacher".equals(selectedUserType)) {
                                 // Navigate to Teacher Main Activity

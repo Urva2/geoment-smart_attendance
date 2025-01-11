@@ -77,10 +77,11 @@ public class StudentMainActivity1 extends AppCompatActivity {
                                 etPrn.setText("");
 
                                 // You can navigate to another activity if needed
-                                Intent intent=new Intent(StudentMainActivity1.this,StudentMainActivity2.class);
+                                Intent intent=new Intent(StudentMainActivity1.this,StudentMainActivity.class);
                                 startActivity(intent);
                             }
                         })
+
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {

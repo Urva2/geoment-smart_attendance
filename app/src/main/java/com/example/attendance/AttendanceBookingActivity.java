@@ -15,9 +15,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,15 +24,12 @@ import java.util.Map;
 public class AttendanceBookingActivity extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-    private static final double ATTENDANCE_LATITUDE = 22.3233625; // Replace with your predefined latitude
-    private static final double ATTENDANCE_LONGITUDE = 73.1794455; // Replace with your predefined longitude
-    private static final double RADIUS_IN_METERS =30; // Restrict to 25 meters
     private FusedLocationProviderClient fusedLocationClient;
-    private LocationCallback locationCallback;
     private Button bookAttendanceButton;
     private CheckBox bookAttendanceCheckBox;
     private FirebaseFirestore firestore;
-    private String prn, branch, year, id, sub;
+    String prn, branch, year, id, sub;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +43,8 @@ public class AttendanceBookingActivity extends AppCompatActivity {
         id = getIntent().getStringExtra("id");
         sub = getIntent().getStringExtra("sub");
 
-        Toast.makeText(this, "PRN: " + prn + ", Branch: " + branch + ", Year: " + year + ", ID: " + id + ", SUB:" + sub, Toast.LENGTH_LONG).show();
+        // Use the values as needed
+        Toast.makeText(this, "PRN: " + prn + ", Branch: " + branch + ", Year: " + year + ", ID: " + id + ", SUB: " + sub, Toast.LENGTH_LONG).show();
 
         // Initialize views
         bookAttendanceButton = findViewById(R.id.bookAttendanceButton);
@@ -60,106 +55,100 @@ public class AttendanceBookingActivity extends AppCompatActivity {
 
         // Check for location permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Request permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
 
-        // Set up live location updates
-        setupLocationCallback();
-
         // Set onClick listener for the Book Attendance button
         bookAttendanceButton.setOnClickListener(view -> {
+            // Check if the user wants to book attendance
             if (bookAttendanceCheckBox.isChecked()) {
-                startLocationUpdates();
+                // Get location and check if within radius for attendance booking
+                getLocationAndBookAttendance();
             } else {
                 Toast.makeText(this, "Attendance booking not selected.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    // Handle the permission request result
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_SHORT).show();
+                // Permission granted, get location
+                getLocationAndBookAttendance();
             } else {
+                // Permission denied
                 Toast.makeText(this, "Permission denied. Cannot access location.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void setupLocationCallback() {
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-
-                // Get the latest location
-                Location location = locationResult.getLastLocation();
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-
-                    // Calculate the distance between the current location and the attendance location
-                    float[] distance = new float[1];
-                    Location.distanceBetween(latitude, longitude, ATTENDANCE_LATITUDE, ATTENDANCE_LONGITUDE, distance);
-
-                    // Check if the distance is within the 25-meter radius
-                    if (distance[0] <= RADIUS_IN_METERS) {
-                        markAttendance("P");
-                        Toast.makeText(AttendanceBookingActivity.this, "Attendance booked successfully!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        markAttendance("A");
-                        Toast.makeText(AttendanceBookingActivity.this, "You are outside the attendance area. Attendance not booked.", Toast.LENGTH_SHORT).show();
-                    }
-
-                    // Stop location updates after attendance is booked
-                    stopLocationUpdates();
-
-                    // Redirect after 2 seconds
-                    new Handler().postDelayed(() -> {
-                        Intent intent = new Intent(AttendanceBookingActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                    }, 2000);
-                }
-            }
-        };
-    }
-
-    private void startLocationUpdates() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(1000); // Check location every second
-
+    // Method to get the user's current location and check if they are within the attendance radius
+    private void getLocationAndBookAttendance() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, location -> {
+                        if (location != null) {
+                            // Once we have the location, check if it's within the predetermined radius
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+
+                            // For example, let's assume the predetermined location is at this latitude and longitude
+                            double attendanceLatitude = 22.2917628;  // Replace with your predefined latitude
+                            double attendanceLongitude = 73.1994581;  // Replace with your predefined longitude
+                            double radius = 100;  // In meters
+
+                            // Calculate the distance between the current location and the attendance location
+                            float[] distance = new float[1];
+                            Location.distanceBetween(latitude, longitude, attendanceLatitude, attendanceLongitude, distance);
+
+                            // Check if the distance is less than or equal to the radius
+                            firestore = FirebaseFirestore.getInstance();
+                            Map<String, Object> lectureData = new HashMap<>();
+
+                            if (distance[0] <= radius) {
+                                // If present, mark as "P"
+                                lectureData.put("attend", "P");
+                            } else {
+                                // If not present, mark as "E"
+                                lectureData.put("attend", "A");
+                            }
+
+                            // Add student details to the Firestore
+                            lectureData.put("prn", prn);
+
+                            firestore.collection("attendancedetails")
+                                    .document(branch)  // This is a specific document under "attendance details"
+                                    .collection(year)   // Document for the selected year
+                                    .document(sub)      // Subject code
+                                    .collection(id)     // Collection for the subject ID
+                                    .document(prn)      // Document for the student's PRN
+                                    .set(lectureData)    // Store the lecture data in that specific path
+                                    .addOnSuccessListener(documentReference -> {
+                                        // Attendance successfully recorded
+                                        Toast.makeText(this, "Attendance recorded successfully!", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Handle failure
+                                        Toast.makeText(this, "Error recording attendance: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+
+                            // Navigate to the login activity after a brief delay
+                            new Handler().postDelayed(() -> {
+                                Intent intent = new Intent(AttendanceBookingActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }, 2000);
+
+                        } else {
+                            Toast.makeText(this, "Unable to get location. Please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            // Permission is not granted, so request the permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
     }
-
-    private void stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
-
-    private void markAttendance(String status) {
-        firestore = FirebaseFirestore.getInstance();
-        Map<String, Object> lectureData = new HashMap<>();
-        lectureData.put("attend", status);
-        lectureData.put("prn", prn);
-
-        firestore.collection("attendancedetails")
-                .document(branch)
-                .collection(year)
-                .document(sub)
-                .collection(id)
-                .document(prn)
-                .set(lectureData)
-                .addOnSuccessListener(documentReference -> {
-                    // Success message can be added here if needed
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to book attendance: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-           });
-}
 }

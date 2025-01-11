@@ -54,7 +54,7 @@
         android:text="View Attendance"
         android:layout_below="@id/subjectIdEditText" />
 
-    <!-- Column Headers -->
+    <!-- Column Headers (PRN, Name, Attendance) -->
     <LinearLayout
         android:id="@+id/Edittexts"
         android:layout_width="match_parent"
@@ -96,4 +96,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/Edittexts"
         android:layout_marginTop="16dp"/>
+
+    <!-- Export PDF Button -->
+    <Button
+        android:id="@+id/exportPdfButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/attendanceRecyclerView"
+        android:layout_marginTop="110dp"
+        android:text="Export PDF" />
+
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package com.example.attendance;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class TeacherMainActivity extends AppCompatActivity {
 
-    private Button btnAppointLecture, btnViewPastAttendance;
+    private Button btnAppointLecture, btnViewPastAttendance, chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +19,7 @@ public class TeacherMainActivity extends AppCompatActivity {
         // Initialize buttons
         btnAppointLecture = findViewById(R.id.btnAppointLecture);
         btnViewPastAttendance = findViewById(R.id.btnViewPastAttendance);
+        chat = findViewById(R.id.chat);
 
         // Set click listeners for buttons
         btnAppointLecture.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +36,15 @@ public class TeacherMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Navigate to ViewAttendanceActivity
                 Intent intent = new Intent(TeacherMainActivity.this, ViewAttendanceActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to Teacher Chat Activity (Chat functionality)
+                Intent intent = new Intent(TeacherMainActivity.this, teacherchat.class);
                 startActivity(intent);
             }
         });

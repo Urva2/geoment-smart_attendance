@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Enter Lecture ID Section -->
+    <EditText
+        android:id="@+id/lectureIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Lecture ID"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/showMessagesButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Messages"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Displaying messages from students -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/messageListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
+
+    </ScrollView>
+
+    <!-- Enter PRN and Reply Message Section -->
+    <EditText
+        android:id="@+id/prnEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Student PRN"
+        android:inputType="number"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/replyMessageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Reply Message"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/sendReplyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Reply"/>
+
+</LinearLayout>

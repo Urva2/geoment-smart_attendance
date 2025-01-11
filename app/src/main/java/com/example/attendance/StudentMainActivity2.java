@@ -81,13 +81,19 @@ public class StudentMainActivity2 extends AppCompatActivity {
         });
 
         nextStepButton.setOnClickListener(v -> {
+
             Intent intent = new Intent(StudentMainActivity2.this, AttendanceBookingActivity.class);
             intent.putExtra("prn", prnEditText.getText().toString().trim());
             intent.putExtra("branch", branch);
             intent.putExtra("year", year);
             intent.putExtra("id", subjectID);
             intent.putExtra("sub",subjectName);
-            startActivity(intent);
+                intent.putExtra("prn", prnEditText.getText().toString().trim());
+                intent.putExtra("branch", branch);
+                intent.putExtra("year", year);
+                intent.putExtra("id", subjectID);
+                startActivity(intent);
+
         });
     }
 
@@ -130,6 +136,7 @@ public class StudentMainActivity2 extends AppCompatActivity {
                                     .addOnFailureListener(e -> Log.e("FirestoreError", "Error fetching year: " + e.getMessage()));
                         }
                     }
+
 
                     new Handler().postDelayed(() -> {
                         if (!prnFound[0]) {

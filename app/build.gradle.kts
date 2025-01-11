@@ -44,6 +44,9 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.support.annotations)
     implementation(libs.firebase.firestore)
+    implementation(libs.biometric)
+    implementation(libs.recyclerview)
+    implementation(libs.datastore.core.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -52,5 +55,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:21.0.1")
     implementation("com.google.android.gms:play-services-location:18.0.0")
     implementation("com.google.firebase:firebase-firestore:24.7.0")
+
+    implementation("com.itextpdf:itextpdf:5.5.13.2")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
+
 
 }

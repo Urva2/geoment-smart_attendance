@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Biometric Permission -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- Storage Permissions (Optional, for devices targeting SDK <= 32) -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
-    <!-- Ensure that the app can access background location if necessary -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +23,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Attendance"
         tools:targetApi="31">
+        <activity
+            android:name=".teacherchat"
+            android:exported="false" />
+        <activity
+            android:name=".studentchat"
+            android:exported="false" />
+        <activity
+            android:name=".StudentMainActivity"
+            android:exported="false" />
         <activity
             android:name=".AttendanceBookingActivity"
             android:exported="false" />
@@ -34,14 +50,12 @@
         <activity
             android:name=".TeacherMainActivity"
             android:exported="false" />
-
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
