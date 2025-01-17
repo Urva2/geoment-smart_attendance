@@ -55,11 +55,11 @@ public class studentchat extends AppCompatActivity {
                 .collection("Messages")
                 .add(new Message(prn, message))
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(studentchat.this, "Message sent to teacher!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(studentchat.this, "Feedback sent to teacher!", Toast.LENGTH_SHORT).show();
                     messageEditText.setText(""); // Clear message field
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(studentchat.this, "Error sending message", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(studentchat.this, "Error sending feedback", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -78,7 +78,7 @@ public class studentchat extends AppCompatActivity {
                     messageListLayout.removeAllViews(); // Clear previous messages
 
                     if (queryDocumentSnapshots.isEmpty()) {
-                        Toast.makeText(studentchat.this, "No messages found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(studentchat.this, "No feedback found", Toast.LENGTH_SHORT).show();
                     } else {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                             String studentPrn = documentSnapshot.getString("studentPrn");
@@ -87,7 +87,7 @@ public class studentchat extends AppCompatActivity {
                             if (studentPrn != null && messageContent != null) {
                                 // Format and display the message
                                 TextView messageTextView = new TextView(studentchat.this);
-                                messageTextView.setText("PRN: " + studentPrn + "\nMessage: " + messageContent);
+                                messageTextView.setText("PRN: " + studentPrn + "\nFeedback: " + messageContent);
                                 messageTextView.setPadding(10, 10, 10, 10);
                                 messageTextView.setTextSize(16);
                                 messageListLayout.addView(messageTextView);
@@ -96,7 +96,7 @@ public class studentchat extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(studentchat.this, "Error fetching messages", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(studentchat.this, "Error fetching feedback", Toast.LENGTH_SHORT).show();
                 });
     }
 

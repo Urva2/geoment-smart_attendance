@@ -27,4 +27,15 @@
         android:padding="10dp"
         android:layout_marginTop="16dp"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:backgroundTint="#D32F2F"
+        android:textColor="#FFFFFF"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp" />
 </LinearLayout>

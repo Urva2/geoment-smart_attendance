@@ -18,7 +18,7 @@
         android:id="@+id/showMessagesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show Messages"
+        android:text="Show Feedbacks"
         android:layout_marginBottom="16dp"/>
 
     <!-- Displaying messages from students -->
@@ -38,26 +38,10 @@
     </ScrollView>
 
     <!-- Enter PRN and Reply Message Section -->
-    <EditText
-        android:id="@+id/prnEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Student PRN"
-        android:inputType="number"
-        android:layout_marginBottom="8dp"/>
 
-    <EditText
-        android:id="@+id/replyMessageEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Reply Message"
-        android:inputType="text"
-        android:layout_marginBottom="16dp"/>
 
-    <Button
-        android:id="@+id/sendReplyButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Send Reply"/>
+
+
+
 
 </LinearLayout>

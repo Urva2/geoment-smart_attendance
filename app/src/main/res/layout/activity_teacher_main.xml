@@ -30,7 +30,7 @@
         android:id="@+id/chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="chat"
+        android:text="See feedbacks"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 

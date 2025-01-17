@@ -28,54 +28,80 @@
         android:textSize="32sp"
         android:fontFamily="sans-serif-thin"
         android:textStyle="bold" />
-    <!-- ID EditText -->
+
+    <!-- Email Input -->
     <EditText
         android:id="@+id/idEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext"
-        android:hint="✉️Email"
+        android:hint="📩Email"
         android:inputType="textEmailAddress"
         android:padding="16dp"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_marginTop="10dp" />
 
-    <!-- Password EditText -->
-    <EditText
-        android:id="@+id/passwordEditText"
+    <!-- Password Input with Toggle -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="🔒Password"
-        android:inputType="textPassword"
-        android:background="@drawable/edittext"
-        android:padding="16dp"
-        android:layout_marginTop="8dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edittext">
 
-    <!-- Role RadioGroup -->
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="🔒Password"
+            android:background="@drawable/edittext"
+            android:inputType="textPassword"
+             />
+
+        <ImageView
+            android:id="@+id/passwordToggle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/toggle2"
+            android:contentDescription="Toggle Password"
+            android:padding="0dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- Error Message Display -->
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FF0000"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:paddingTop="5dp" />
+
+    <!-- Role Selection -->
     <RadioGroup
         android:id="@+id/roleRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="0dp">
 
         <RadioButton
             android:id="@+id/studentRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Student"/>
+            android:text="Student" />
 
         <RadioButton
             android:id="@+id/teacherRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Teacher"
-            android:layout_marginStart="16dp"/>
-
+            android:layout_marginStart="16dp" />
     </RadioGroup>
-
-    <!-- Fingerprint Register Button -->
     <Button
         android:id="@+id/registerFingerprintButton"
         android:layout_width="match_parent"
@@ -83,18 +109,22 @@
         android:text="Register Fingerprint"
         android:visibility="gone"
         android:layout_gravity="center"
-        android:background="@drawable/button"
+        android:backgroundTint="#FD8A8A"
+        android:textColor="#272727"
         android:layout_marginTop="-10dp"/>
 
-    <!-- Submit Button -->
+    <!-- Register Button -->
     <Button
         android:id="@+id/nextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign up"
+        android:textColor="#272727"
         android:layout_gravity="center"
-        android:background="@drawable/button"
-        android:layout_marginTop="16dp"/>
+        android:backgroundTint="#FD8A8A"
+        android:layout_marginTop="5dp" />
+
+    <!-- Redirect to Sign In -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,8 +132,6 @@
         android:layout_marginTop="8dp"
         android:gravity="center">
 
-
-        <!-- Text: Don't have an account? -->
         <TextView
             android:id="@+id/tvNoAccount"
             android:layout_width="wrap_content"
@@ -112,10 +140,6 @@
             android:textSize="14sp"
             android:gravity="start" />
 
-        <!-- Spacer to push the Sign Up link to the right -->
-
-
-        <!-- Hyperlink for "Sign Up" -->
         <TextView
             android:id="@+id/tvSignInLink"
             android:layout_width="wrap_content"
@@ -129,4 +153,3 @@
             android:onClick="onSignInClick" />
     </LinearLayout>
 </LinearLayout>
-

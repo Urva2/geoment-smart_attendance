@@ -2,8 +2,11 @@ package com.example.attendance;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -25,60 +28,63 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText idEditText, passwordEditText;
     private RadioGroup roleRadioGroup;
     private Button nextButton, registerFingerprintButton;
+    private ImageView passwordToggle;
+    private TextView tvSignInLink, errorTextView;
     private FirebaseAuth mAuth;
-    private TextView tvSignInLink;
     private FirebaseFirestore firestore;
-
-    private boolean isFingerprintRegistered = false; // Track if fingerprint is registered
+    private boolean isFingerprintRegistered = false;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initialize FirebaseAuth and Firestore
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        // Initialize Views
         idEditText = findViewById(R.id.idEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         roleRadioGroup = findViewById(R.id.roleRadioGroup);
         nextButton = findViewById(R.id.nextButton);
         registerFingerprintButton = findViewById(R.id.registerFingerprintButton);
-        tvSignInLink=findViewById(R.id.tvSignInLink);
+        passwordToggle = findViewById(R.id.passwordToggle);
+        tvSignInLink = findViewById(R.id.tvSignInLink);
+        errorTextView = findViewById(R.id.errorTextView);
 
-        // Initially hide the fingerprint button
-        registerFingerprintButton.setVisibility(Button.GONE);
+        registerFingerprintButton.setVisibility(View.GONE);
         tvSignInLink.setOnClickListener(view -> navigateToSignIn());
 
-
-
-
-        // Set radio group change listener
         roleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton selectedRoleButton = findViewById(checkedId);
-            String selectedRole = selectedRoleButton.getText().toString();
-            if (selectedRole.equals("Student")) {
-                // Show fingerprint button for students
-                registerFingerprintButton.setVisibility(Button.VISIBLE);
-                nextButton.setEnabled(false); // Disable next button until fingerprint is registered
+            if (selectedRoleButton.getText().toString().equals("Student")) {
+                registerFingerprintButton.setVisibility(View.VISIBLE);
+                nextButton.setEnabled(false);
             } else {
-                // Hide fingerprint button for teachers
-                registerFingerprintButton.setVisibility(Button.GONE);
-                nextButton.setEnabled(true); // Enable next button for teachers
+                registerFingerprintButton.setVisibility(View.GONE);
+                nextButton.setEnabled(true);
             }
         });
 
-        // Fingerprint registration button click listener
         registerFingerprintButton.setOnClickListener(v -> registerFingerprint());
 
-        // Next Button Click Listener
+        passwordToggle.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                passwordToggle.setImageResource(R.drawable.toggle2);
+            } else {
+                passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                passwordToggle.setImageResource(R.drawable.toggle);
+            }
+            isPasswordVisible = !isPasswordVisible;
+            passwordEditText.setSelection(passwordEditText.length());
+        });
+
         nextButton.setOnClickListener(v -> registerUser());
     }
 
     private void navigateToSignIn() {
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class); // Replace with your Sign Up activity
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -97,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(RegisterActivity.this, "Fingerprint registered successfully!", Toast.LENGTH_SHORT).show();
                 isFingerprintRegistered = true;
-                nextButton.setEnabled(true); // Enable the next button
+                nextButton.setEnabled(true);
             }
 
             @Override
@@ -127,14 +133,27 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
         int selectedRoleId = roleRadioGroup.getCheckedRadioButtonId();
 
-        // Validation
-        if (id.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
-            return;
+        errorTextView.setVisibility(View.GONE);
+        errorTextView.setText("");
+
+        StringBuilder errorMessages = new StringBuilder();
+
+        if (id.isEmpty()) {
+            errorMessages.append("• Email is required\n");
+        }
+
+        String passwordError = checkPasswordStrength(password);
+        if (passwordError != null) {
+            errorMessages.append(passwordError).append("\n");
         }
 
         if (selectedRoleId == -1) {
-            Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
+            errorMessages.append("• Please select a role\n");
+        }
+
+        if (errorMessages.length() > 0) {
+            errorTextView.setText(errorMessages.toString().trim());
+            errorTextView.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -146,50 +165,52 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Create user in Firebase Authentication
         mAuth.createUserWithEmailAndPassword(id, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            // Store the role and email in Firestore
                             storeUserDataInFirestore(user.getUid(), user.getEmail(), selectedRole);
-
                             Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-
-                            // Redirect based on role
-                            Intent intent;
-                            if (selectedRole.equals("Student")) {
-                                intent = new Intent(RegisterActivity.this, StudentMainActivity1.class);
-                            } else {
-                                intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            }
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
-                            finish(); // Prevents user from going back to registration screen
+                            finish();
                         }
                     } else {
-                        // Show error message
                         String errorMessage = task.getException() != null ? task.getException().getMessage() : "Unknown error";
-                        Toast.makeText(RegisterActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                        errorTextView.setText("• " + errorMessage);
+                        errorTextView.setVisibility(View.VISIBLE);
                     }
                 });
     }
 
-    private void storeUserDataInFirestore(String userId, String email, String role) {
-        // Create a new user document with the email and role
-        User user = new User(email, role);
+    private String checkPasswordStrength(String password) {
+        if (password.isEmpty()) return "• Password is required";
+        if (password.length() < 8) return "• Password must be at least 8 characters long";
+        boolean hasUppercase = false, hasLowercase = false, hasDigit = false, hasSpecialChar = false;
+        String specialCharacters = "@#$%^&+=!";
 
-        // Save the user data in Firestore under "users" collection
-        firestore.collection("users")
-                .document(userId)
-                .set(user)
-                .addOnSuccessListener(aVoid -> {
-                    // Data saved successfully
-                })
-                .addOnFailureListener(e -> {
-                    // Error occurred while saving data
-                    Toast.makeText(RegisterActivity.this, "Error saving user data", Toast.LENGTH_SHORT).show();
-                });
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUppercase = true;
+            if (Character.isLowerCase(c)) hasLowercase = true;
+            if (Character.isDigit(c)) hasDigit = true;
+            if (specialCharacters.contains(String.valueOf(c))) hasSpecialChar = true;
+        }
+
+        if (!hasUppercase) return "• Password must contain at least one uppercase letter (A-Z)";
+        if (!hasLowercase) return "• Password must contain at least one lowercase letter (a-z)";
+        if (!hasDigit) return "• Password must contain at least one number (0-9)";
+        if (!hasSpecialChar) return "• Password must contain at least one special character (@, #, $, etc.)";
+
+        return null;
+    }
+
+    private void storeUserDataInFirestore(String userId, String email, String role) {
+        User user = new User(email, role);
+        firestore.collection("users").document(userId).set(user).addOnFailureListener(e -> {
+            errorTextView.setText("• Error saving user data");
+            errorTextView.setVisibility(View.VISIBLE);
+        });
     }
 
     public static class User {
@@ -210,4 +231,3 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 }
-

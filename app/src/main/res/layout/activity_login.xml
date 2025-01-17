@@ -6,7 +6,6 @@
     android:background="@drawable/login_reg"
     android:padding="16dp">
 
-
     <TextView
         android:id="@+id/heading1"
         android:layout_width="wrap_content"
@@ -30,14 +29,15 @@
         android:fontFamily="sans-serif-thin"
         android:textStyle="bold" />
 
+    <!-- Email input field -->
     <EditText
         android:id="@+id/etID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:hint="✉️Email"
+        android:hint="✉Email"
         android:background="@drawable/edittext"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:minHeight="48dp" />
 
     <!-- Password input field -->
@@ -50,13 +50,43 @@
         android:background="@drawable/edittext"
         android:inputType="textPassword"
         android:minHeight="48dp" />
+
+    <!-- Error message TextView -->
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:text=""
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="14sp"
+        android:background="@android:color/transparent" />
+
+    <!-- Forgot Password TextView -->
+
+    <!-- Sign In Button -->
+    <TextView
+        android:id="@+id/tvForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="48dp"
+        android:paddingTop="8dp"
+        android:text="Forgot Password?"
+        android:textSize="14sp"
+        android:textColor="@android:color/holo_blue_dark"
+       />
+
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:text="Sign in"
-        android:layout_marginTop="30dp" />
+        android:backgroundTint="#FD8A8A"
+        android:text="Login"
+        android:layout_marginTop="-10dp" />
 
     <!-- Horizontal layout for "Don't have an account?" and "Sign Up" -->
     <LinearLayout
@@ -66,8 +96,6 @@
         android:layout_marginTop="8dp"
         android:gravity="center">
 
-
-        <!-- Text: Don't have an account? -->
         <TextView
             android:id="@+id/tvNoAccount"
             android:layout_width="wrap_content"
@@ -76,9 +104,6 @@
             android:textSize="14sp"
             android:gravity="start" />
 
-        <!-- Spacer to push the Sign Up link to the right -->
-
-        <!-- Hyperlink for "Sign Up" -->
         <TextView
             android:id="@+id/tvSignUpLink"
             android:layout_width="wrap_content"
@@ -91,8 +116,5 @@
             android:focusable="true"
             android:onClick="onSignUpClick" />
     </LinearLayout>
-
-    <!-- Login button -->
-
 
 </LinearLayout>
