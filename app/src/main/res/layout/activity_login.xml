@@ -3,45 +3,96 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/login_reg"
     android:padding="16dp">
 
-    <!-- ID input -->
+
+    <TextView
+        android:id="@+id/heading1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:gravity="start"
+        android:text="Hello,"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/heading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Welcome Back !"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/etID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter ID"
-        android:inputType="text" />
+        android:layout_marginTop="3dp"
+        android:hint="✉️Email"
+        android:background="@drawable/edittext"
+        android:inputType="text"
+        android:minHeight="48dp" />
 
-    <!-- Password input -->
+    <!-- Password input field -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
-        android:hint="Enter Password"
-        android:inputType="textPassword" />
-
-    <!-- Spinner for user type selection -->
-    <Spinner
-        android:id="@+id/spinnerUserType"
-        android:layout_width="match_parent"
-        android:entries="@array/role_array"
-        android:layout_height="wrap_content" />
-
-    <!-- Checkbox for student -->
-
-    <!-- Submit button -->
-    <CheckBox
-        android:id="@+id/cbStudent"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_height="wrap_content"
-        android:text="login for first time" />
-
+        android:hint="🔒Password"
+        android:background="@drawable/edittext"
+        android:inputType="textPassword"
+        android:minHeight="48dp" />
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:text="Sign in"
+        android:layout_marginTop="30dp" />
 
-        android:text="Submit" />
+    <!-- Horizontal layout for "Don't have an account?" and "Sign Up" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
+
+
+        <!-- Text: Don't have an account? -->
+        <TextView
+            android:id="@+id/tvNoAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account?"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <!-- Spacer to push the Sign Up link to the right -->
+
+        <!-- Hyperlink for "Sign Up" -->
+        <TextView
+            android:id="@+id/tvSignUpLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="14sp"
+            android:gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onSignUpClick" />
+    </LinearLayout>
+
+    <!-- Login button -->
+
+
 </LinearLayout>

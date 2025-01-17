@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/mainpage"
     tools:context=".MainActivity">
 
     <!-- Login Button -->
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="200dp" />
 
     <!-- Register Button -->
-    <Button
-        android:id="@+id/registerButton"
+
+
+    <TextView
+        android:id="@+id/onnowClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginButton"
-        android:layout_marginTop="20dp" />
+        android:text="         "
+        android:visibility="visible"
+        android:textColor="@android:color/holo_blue_light"
+        android:gravity="end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+       android:textSize="30dp"
+        android:background="@android:color/transparent"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onnowClick" />
+
+</RelativeLayout>

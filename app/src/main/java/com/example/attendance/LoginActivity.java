@@ -2,27 +2,21 @@ package com.example.attendance;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etID, etPassword;
-    private Spinner spinnerUserType;
-    private CheckBox cbStudent;
+    private TextView tvSignUpLink;
     private Button btnSubmit;
     private FirebaseAuth mAuth;
-    private String selectedUserType;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,35 +26,23 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize UI components
         etID = findViewById(R.id.etID);
         etPassword = findViewById(R.id.etPassword);
-        spinnerUserType = findViewById(R.id.spinnerUserType);
-        cbStudent = findViewById(R.id.cbStudent);
         btnSubmit = findViewById(R.id.btnSubmit);
+        tvSignUpLink = findViewById(R.id.tvSignUpLink);
+
 
         // Initialize Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
-
-        // Set Spinner onItemSelectedListener
-        spinnerUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedUserType = parentView.getItemAtPosition(position).toString();
-
-                // Hide checkbox if Teacher is selected, otherwise make it visible
-                if ("Teacher".equals(selectedUserType)) {
-                    cbStudent.setVisibility(View.GONE);
-                } else if ("Student".equals(selectedUserType)) {
-                    cbStudent.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                selectedUserType = null;
-            }
-        });
+        db = FirebaseFirestore.getInstance();
 
         // Set Submit button click listener
         btnSubmit.setOnClickListener(view -> authenticateUser());
+        tvSignUpLink.setOnClickListener(view -> navigateToSignUp());
+
+    }
+
+    private void navigateToSignUp() {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class); // Replace with your Sign Up activity
+        startActivity(intent);
     }
 
     private void authenticateUser() {
@@ -69,33 +51,51 @@ public class LoginActivity extends AppCompatActivity {
 
         // Validate input fields
         if (userID.isEmpty() || userPassword.isEmpty()) {
-            Toast.makeText(this, "Please enter both ID and Password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter both Email and Password", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Authenticate user with Firebase
+        // Authenticate user with Firebase Authentication
         mAuth.signInWithEmailAndPassword(userID, userPassword)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            // Navigate based on user type and checkbox status
-                            if ("Student".equals(selectedUserType)) {
-                                if (cbStudent.isChecked()) {
-                                    // Navigate to Student Main Activity 1
-                                    startActivity(new Intent(LoginActivity.this, StudentMainActivity1.class));
-                                } else {
-                                    // Navigate to Student Main Activity 2
-                                    startActivity(new Intent(LoginActivity.this, StudentMainActivity.class));
-                                }
-                            } else if ("Teacher".equals(selectedUserType)) {
-                                // Navigate to Teacher Main Activity
-                                startActivity(new Intent(LoginActivity.this, TeacherMainActivity.class));
-                            }
-                        }
+                        // Get the current authenticated user
+                        String currentUserID = mAuth.getCurrentUser().getUid();
+
+                        // Fetch role from Firestore based on userID (UID)
+                        db.collection("users")
+                                .document(currentUserID)  // Use UID to get the user document
+                                .get()
+                                .addOnCompleteListener(queryTask -> {
+                                    if (queryTask.isSuccessful() && queryTask.getResult() != null) {
+                                        String role = queryTask.getResult().getString("role");
+
+                                        if (role != null) {
+                                            // Navigate based on role
+                                            Intent intent;
+                                            if ("Student".equals(role)) {
+                                                intent = new Intent(LoginActivity.this, StudentMainActivity.class);
+                                            } else {
+                                                intent = new Intent(LoginActivity.this, TeacherMainActivity.class);
+                                            }
+                                            startActivity(intent);
+                                            finish(); // Prevents user from going back to login screen
+                                        } else {
+                                            Toast.makeText(LoginActivity.this, "Role not found", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Error fetching role", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     } else {
                         Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
+
+
+
+
     }
 }

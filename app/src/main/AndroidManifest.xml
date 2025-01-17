@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Biometric Permission -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- Storage Permissions (Optional, for devices targeting SDK <= 32) -->
@@ -23,6 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Attendance"
         tools:targetApi="31">
+        <activity
+            android:name=".splashscreen"
+            android:theme="@style/SplashTheme"
+            android:exported="false">
+        </activity>
+
+
+
+
         <activity
             android:name=".teacherchat"
             android:exported="false" />
@@ -56,6 +66,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

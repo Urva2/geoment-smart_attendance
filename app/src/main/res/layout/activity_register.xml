@@ -1,70 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    android:orientation="vertical"
+    android:background="@drawable/login_reg"
+    android:padding="16dp">
 
-    <!-- ID Input Field -->
+    <TextView
+        android:id="@+id/heading1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:gravity="start"
+        android:text="Hello,"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/heading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Register Now !"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold" />
+    <!-- ID EditText -->
     <EditText
         android:id="@+id/idEditText"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter ID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="16dp"/>
-
-    <!-- Password Input Field -->
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Create Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/idEditText"
-        android:padding="16dp"/>
-
-    <!-- Role Selection Spinner -->
-    <Spinner
-        android:id="@+id/roleSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+        android:background="@drawable/edittext"
+        android:hint="✉️Email"
+        android:inputType="textEmailAddress"
         android:padding="16dp"
-        android:entries="@array/role_array"
+        android:layout_marginTop="10dp"
         />
 
-    <!-- Fingerprint Register Button (Initially Invisible) -->
+    <!-- Password EditText -->
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="🔒Password"
+        android:inputType="textPassword"
+        android:background="@drawable/edittext"
+        android:padding="16dp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Role RadioGroup -->
+    <RadioGroup
+        android:id="@+id/roleRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <RadioButton
+            android:id="@+id/studentRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Student"/>
+
+        <RadioButton
+            android:id="@+id/teacherRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teacher"
+            android:layout_marginStart="16dp"/>
+
+    </RadioGroup>
+
+    <!-- Fingerprint Register Button -->
     <Button
-        android:id="@+id/fingerprintRegisterButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/registerFingerprintButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register Fingerprint"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/roleSpinner"
-        android:layout_marginTop="16dp"
-        android:padding="12dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:background="@drawable/button"
+        android:layout_marginTop="-10dp"/>
 
-    <!-- Submit Button (Initially Invisible for Student) -->
+    <!-- Submit Button -->
     <Button
-        android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/nextButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fingerprintRegisterButton"
-        android:layout_marginTop="16dp"
-        android:padding="12dp"
-        android:visibility="gone"/>
+        android:text="Sign up"
+        android:layout_gravity="center"
+        android:background="@drawable/button"
+        android:layout_marginTop="16dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Text: Don't have an account? -->
+        <TextView
+            android:id="@+id/tvNoAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account?"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <!-- Spacer to push the Sign Up link to the right -->
+
+
+        <!-- Hyperlink for "Sign Up" -->
+        <TextView
+            android:id="@+id/tvSignInLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="14sp"
+            android:gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onSignInClick" />
+    </LinearLayout>
+</LinearLayout>
+

@@ -58,6 +58,8 @@ dependencies {
 
     implementation("com.itextpdf:itextpdf:5.5.13.2")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.biometric:biometric:1.1.0")
+
 
 
 
