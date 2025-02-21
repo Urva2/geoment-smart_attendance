@@ -4,28 +4,32 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- PRN EditText -->
+    <!-- PRN EditText (Now Non-Editable) -->
     <EditText
         android:id="@+id/prnEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter PRN" />
+        android:hint="Fetching PRN..."
+        android:focusable="false"
+        android:clickable="false"
+        android:background="@android:color/darker_gray"
+        android:textColor="#000000" />
 
-    <!-- Book Lecture Button -->
+    <!-- Fetch PRN Button -->
     <Button
-        android:id="@+id/bookLectureButton"
+        android:id="@+id/fetchPRNButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/prnEditText"
         android:layout_marginTop="8dp"
-        android:text="Check PRN" />
+        android:text="Fetch PRN" />
 
     <!-- Subject Name EditText -->
     <EditText
         android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bookLectureButton"
+        android:layout_below="@id/fetchPRNButton"
         android:layout_marginTop="8dp"
         android:hint="Enter Subject Name"
         android:visibility="gone" />
@@ -67,6 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="16dp"
-        android:text="Book"
-        />
+        android:text="Book" />
+
 </RelativeLayout>

@@ -27,6 +27,16 @@
         android:padding="10dp"
         android:layout_marginTop="16dp"
         android:textSize="18sp" />
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SickLeaveApplication"
+        android:backgroundTint="#FF018786"
+        android:textColor="#FFFFFF"
+        android:padding="10dp"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/logoutButton"

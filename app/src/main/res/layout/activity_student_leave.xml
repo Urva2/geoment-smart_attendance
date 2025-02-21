@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/etStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Start Date (YYYY-MM-DD)"
+        android:inputType="date"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/etEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="End Date (YYYY-MM-DD)"
+        android:inputType="date"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/etReason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Reason for Leave"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/btnUploadPDF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload Medical Certificate"
+        android:layout_marginTop="8dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnSubmitLeave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Leave Request"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

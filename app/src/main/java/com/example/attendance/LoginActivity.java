@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private TextView tvsignup;
     private EditText etID, etPassword;
     private Button btnSubmit;
     private TextView errorTextView;
@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnSubmit = findViewById(R.id.btnSubmit);
         errorTextView = findViewById(R.id.errorTextView);
+        tvsignup=findViewById(R.id.tvSignUpLink);
 
         // Initialize Firebase Authentication & Firestore
         mAuth = FirebaseAuth.getInstance();
@@ -50,6 +51,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set Submit button click listener
         btnSubmit.setOnClickListener(view -> authenticateUser());
+        tvsignup.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void checkIfUserIsLoggedIn() {

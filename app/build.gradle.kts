@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.biometric)
     implementation(libs.recyclerview)
     implementation(libs.datastore.core.android)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

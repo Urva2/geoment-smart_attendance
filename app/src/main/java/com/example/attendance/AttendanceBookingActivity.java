@@ -141,8 +141,8 @@ public class AttendanceBookingActivity extends AppCompatActivity {
                             double longitude = location.getLongitude();
 
                             // For example, let's assume the predetermined location is at this latitude and longitude
-                            double attendanceLatitude = 22.2917628;  // Replace with your predefined latitude
-                            double attendanceLongitude = 73.1994581;  // Replace with your predefined longitude
+                            double attendanceLatitude = 22.3233361;  // Replace with your predefined latitude
+                            double attendanceLongitude = 73.1794187;  // Replace with your predefined longitude
                             double radius = 100;  // In meters
 
                             // Calculate the distance between the current location and the attendance location

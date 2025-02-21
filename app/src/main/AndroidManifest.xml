@@ -6,7 +6,10 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Biometric Permission -->
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- Storage Permissions (Optional, for devices targeting SDK <= 32) -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -19,10 +22,11 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
+        android:hardwareAccelerated="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Attendance"
+        android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
             android:name=".splashscreen"
@@ -38,6 +42,11 @@
 
         <activity
             android:name=".teacherchat"
+            android:exported="false" />
+        <activity android:name=".StudentLeaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultyLeaveActivity"
             android:exported="false" />
         <activity
             android:name=".studentchat"

@@ -6,11 +6,12 @@
     android:background="@drawable/login_reg"
     android:padding="16dp">
 
+    <!-- Headings -->
     <TextView
         android:id="@+id/heading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="350dp"
         android:gravity="start"
         android:text="Hello,"
         android:textColor="@color/black"
@@ -23,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="Welcome Back !"
+        android:text="Welcome Back!"
         android:textColor="@color/black"
         android:textSize="32sp"
         android:fontFamily="sans-serif-thin"
@@ -33,23 +34,33 @@
     <EditText
         android:id="@+id/etID"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="3dp"
-        android:hint="✉Email"
+        android:hint="📩 Email"
         android:background="@drawable/edittext"
         android:inputType="textEmailAddress"
-        android:minHeight="48dp" />
+        android:paddingHorizontal="16dp" />
 
     <!-- Password input field -->
-    <EditText
-        android:id="@+id/etPassword"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:hint="🔒Password"
-        android:background="@drawable/edittext"
-        android:inputType="textPassword"
-        android:minHeight="48dp" />
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edittext">
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="🔒 Password"
+            android:background="@android:color/transparent"
+            android:inputType="textPassword"
+            android:paddingHorizontal="0dp" />
+
+    </LinearLayout>
 
     <!-- Error message TextView -->
     <TextView
@@ -64,8 +75,6 @@
         android:background="@android:color/transparent" />
 
     <!-- Forgot Password TextView -->
-
-    <!-- Sign In Button -->
     <TextView
         android:id="@+id/tvForgotPassword"
         android:layout_width="wrap_content"
@@ -74,26 +83,28 @@
         android:clickable="true"
         android:focusable="true"
         android:minHeight="48dp"
-        android:paddingTop="8dp"
+        android:paddingTop="0dp"
         android:text="Forgot Password?"
         android:textSize="14sp"
-        android:textColor="@android:color/holo_blue_dark"
-       />
+        android:textColor="#FF6B6B" />
 
+    <!-- Sign In Button -->
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FD8A8A"
-        android:text="Login"
-        android:layout_marginTop="-10dp" />
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_button"
+        android:text="Sign in"
+        android:textColor="@android:color/white"
+        android:textSize="16dp"
+        android:layout_marginTop="16dp" />
 
     <!-- Horizontal layout for "Don't have an account?" and "Sign Up" -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:gravity="center">
 
         <TextView
@@ -109,12 +120,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="#FF6B6B"
             android:textSize="14sp"
             android:gravity="end"
             android:clickable="true"
             android:focusable="true"
+
             android:onClick="onSignUpClick" />
     </LinearLayout>
-
 </LinearLayout>
