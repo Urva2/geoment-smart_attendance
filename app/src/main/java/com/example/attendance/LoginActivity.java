@@ -101,12 +101,13 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         String role = task.getResult().getString("role");
-
+                        String prn= task.getResult().getString("prn");
                         if (role != null) {
                             // Save login state and role in SharedPreferences
                             sharedPreferences.edit()
                                     .putBoolean("isLoggedIn", true)
                                     .putString("role", role)
+                                    .putString("prn",prn)
                                     .apply();
 
                             // Navigate to the respective screen

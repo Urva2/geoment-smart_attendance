@@ -17,5 +17,11 @@
         <item>CS</item>
     </string-array>
 
+    <string name="Geoment">Leave Management</string>
+    <string name="upload_pdf">Upload PDF</string>
+    <string name="submit">Submit</string>
+    <string name="fetch_leave_details">Fetch Leave Details</string>
+
+
 
 </resources>

@@ -1,9 +1,11 @@
 package com.example.attendance;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +55,20 @@ public class StudentMainActivity1 extends AppCompatActivity {
                 String branch = spinnerBranch.getSelectedItem().toString();
                 String name = etName.getText().toString().trim();
                 String prn = etPrn.getText().toString().trim();
+// After user enters PRN and submits
+                String enteredPRN = etPrn.getText().toString().trim();
+
+                if (!enteredPRN.isEmpty()) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                   // editor.putString("userPRN", enteredPRN);
+                    editor.apply();
+
+                    Toast.makeText(StudentMainActivity1.this, "SharedPreferences updated", Toast.LENGTH_SHORT).show();
+                    //Log.d("DEBUG", "Stored PRN: " + enteredPRN);
+                } else {
+                    Toast.makeText(StudentMainActivity1.this, "Please enter a valid PRN", Toast.LENGTH_SHORT).show();
+                }
 
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(prn)) {
                     Toast.makeText(StudentMainActivity1.this, "Please enter all fields", Toast.LENGTH_SHORT).show();

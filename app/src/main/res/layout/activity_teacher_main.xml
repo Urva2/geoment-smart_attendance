@@ -43,5 +43,12 @@
         android:padding="10dp"
         android:layout_marginTop="20dp"
         android:textSize="18sp" />
+    <Button
+        android:id="@+id/leave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Approve leaves"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
 </LinearLayout>

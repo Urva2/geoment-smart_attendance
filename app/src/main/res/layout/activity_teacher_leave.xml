@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtTeacherHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leave Requests"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+
+    <!-- EditText for Branch -->
+    <EditText
+        android:id="@+id/editBranch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Branch (e.g., IT)"
+        android:inputType="text"/>
+
+    <!-- EditText for Year -->
+    <EditText
+        android:id="@+id/editYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Year (e.g., FY)"
+        android:inputType="text"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Fetch Requests Button -->
+    <Button
+        android:id="@+id/btnFetchRequests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetch Requests"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

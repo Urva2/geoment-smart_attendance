@@ -26,7 +26,7 @@ public class teacherchat extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         lectureIdEditText = findViewById(R.id.lectureIdEditText);
-        prnEditText = findViewById(R.id.prnEditText);
+
 
         showMessagesButton = findViewById(R.id.showMessagesButton);
 

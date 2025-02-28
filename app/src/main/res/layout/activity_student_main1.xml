@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/appsback"
     android:padding="16dp">
 
     <!-- Year Spinner -->
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Select Year"
         android:textSize="16sp" />
+
     <Spinner
         android:id="@+id/spinner_year"
         android:layout_width="match_parent"
@@ -38,19 +40,23 @@
     <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Name"
-        android:inputType="textPersonName"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="48dp"
+        android:layout_marginTop="3dp"
+        android:hint="Enter name "
+        android:background="@drawable/edittext"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="16dp" />
 
     <!-- PRN Input -->
     <EditText
         android:id="@+id/et_prn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter PRN"
-        android:inputType="number"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="48dp"
+        android:layout_marginTop="3dp"
+        android:hint="Enter prn"
+        android:background="@drawable/edittext"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="16dp" />/>
 
     <!-- Submit Button -->
     <Button
@@ -58,6 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
+        android:background="@drawable/rounded_button"
         android:layout_marginBottom="16dp" />
 
     <!-- Student Book Lecture Button -->

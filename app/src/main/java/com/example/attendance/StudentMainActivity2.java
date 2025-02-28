@@ -1,5 +1,6 @@
 package com.example.attendance;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,16 +50,22 @@ public class StudentMainActivity2 extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // Retrieve PRN from SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        userPRN = sharedPreferences.getString("userPRN", "");
+        SharedPreferences sharedPreferences = getSharedPreferences("StudentInfo", Context.MODE_PRIVATE);
+        //IF SOME ERROR IN FETCHING THEN CHANGE getActivity() TO requireContext() and Context TO getActivity()
+        userPRN = sharedPreferences.getString("PRN", "");
+        branch = sharedPreferences.getString("Department", "");
+        year = sharedPreferences.getString("Year","");
 
         // Auto-fill PRN and disable editing
         prnEditText.setText(userPRN);
         prnEditText.setEnabled(false);
-
+        Log.d("DEBUG", "Retrieved PRN: " + userPRN);
         bookLectureButton.setOnClickListener(v -> {
             if (!userPRN.isEmpty()) {
-                fetchStudentDetails(userPRN);
+                Toast.makeText(this, "Found student in " + year + " of " + branch, Toast.LENGTH_SHORT).show();
+                subjectNameEditText.setVisibility(View.VISIBLE);
+                subjectIdEditText.setVisibility(View.VISIBLE);
+                fetchLectureDetailsButton.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(this, "PRN not found. Please try again.", Toast.LENGTH_SHORT).show();
             }
@@ -85,7 +92,7 @@ public class StudentMainActivity2 extends AppCompatActivity {
         });
     }
 
-    private void fetchStudentDetails(String prn) {
+   /* private void fetchStudentDetails(String prn) {
         db.collection("studentdetails")
                 .get()
                 .addOnSuccessListener(branchSnapshots -> {
@@ -114,7 +121,7 @@ public class StudentMainActivity2 extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> Log.e("FirestoreError", "Error fetching branches: " + e.getMessage()));
-    }
+    }*/
 
     private void fetchAppointmentDetails() {
         db.collection("lectures")

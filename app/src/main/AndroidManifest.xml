@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
@@ -8,14 +9,16 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Biometric Permission -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
-
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+
 
     <application
         android:allowBackup="true"
@@ -28,28 +31,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary:// 356955384385763:E0-zZv_zjqEeuq4nJY1pRmxbFlE@ds12ivy94"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity
+            android:name=".LeaveRequestAdapter"
+            android:exported="false" />
         <activity
             android:name=".splashscreen"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
-
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".teacherchat"
+            android:name=".MyApplication"
+            android:exported="false" />
+        <activity
+            android:name=".ChatActivity"
             android:exported="false" />
         <activity android:name=".StudentLeaveActivity"
             android:exported="false" />
         <activity
-            android:name=".FacultyLeaveActivity"
+            android:name=".TeacherLeaveActivity"
             android:exported="false" />
         <activity
-            android:name=".studentchat"
+            android:name=".ChatListActivity"
             android:exported="false" />
         <activity
             android:name=".StudentMainActivity"
@@ -73,17 +86,17 @@
             android:name=".TeacherMainActivity"
             android:exported="false" />
         <activity
+            android:name=".TeacherMainActivity1"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>
