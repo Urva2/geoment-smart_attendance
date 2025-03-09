@@ -60,14 +60,14 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(chatToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show back button
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back); // Custom back icon (optional)
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back); // Custom back icon (optional)
 
         if(subjectID!=null)
         {
             tvSubjectName.setText(subjectID);
         }
         //userRole = getIntent().getStringExtra("userRole");
-      //  userName = getIntent().getStringExtra("userName");
+        //  userName = getIntent().getStringExtra("userName");
         SharedPreferences sharedPreferences = getSharedPreferences("StudentInfo", Context.MODE_PRIVATE);
         //IF SOME ERROR IN FETCHING THEN CHANGE getActivity() TO requireContext() and Context TO getActivity()
         // studentPRN = sharedPreferences.getString("PRN", "");
@@ -76,7 +76,7 @@ public class ChatActivity extends AppCompatActivity {
         userRole = sharedPreferences.getString("userRole","");
         userName  = sharedPreferences.getString("studentName","");
         messageList = new ArrayList<>();
-        chatAdapter = new ChatAdapter(messageList, userID);
+        chatAdapter = new ChatAdapter(this,subjectID,messageList, userID,userRole);
         recyclerMessages.setLayoutManager(new LinearLayoutManager(this));
         recyclerMessages.setAdapter(chatAdapter);
 
@@ -124,17 +124,21 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
 
+        DocumentReference newMessageRef = db.collection("chats").document(subjectID).collection("messages").document(); // Generate Unique ID
+        String messageID = newMessageRef.getId(); // Get the generated ID
+
         Map<String, Object> messageData = new HashMap<>();
+        messageData.put("messageID", messageID);  // Store the ID in Firestore
         messageData.put("message", messageText);
         messageData.put("senderID", userID);
         messageData.put("senderName", userName);
         messageData.put("timestamp", FieldValue.serverTimestamp());
 
-        db.collection("chats").document(subjectID).collection("messages")
-                .add(messageData)
+        newMessageRef.set(messageData) // Use set() instead of add() to include the unique ID
                 .addOnSuccessListener(docRef -> etMessage.setText(""))
                 .addOnFailureListener(e -> Toast.makeText(this, "Message failed to send", Toast.LENGTH_SHORT).show());
     }
+
     private String formatTimestamp(Timestamp timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         return sdf.format(timestamp.toDate());
@@ -144,6 +148,6 @@ public class ChatActivity extends AppCompatActivity {
         super.onStop();
         if (chatListener != null) {
             chatListener.remove(); // Prevent memory leaks
- }
-}
+        }
+    }
 }

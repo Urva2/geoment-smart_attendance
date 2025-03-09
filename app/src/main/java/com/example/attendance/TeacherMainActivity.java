@@ -33,48 +33,48 @@ public class TeacherMainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 // Getting Data For Chat Activity
-            // Get Firestore instance
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            // Get current user ID
-            String userId = auth.getCurrentUser().getUid();
+        // Get Firestore instance
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Get current user ID
+        String userId = auth.getCurrentUser().getUid();
 
-            // Reference to the user's document
-            db.collection("users").document(userId)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            // Store retrieved data in variables
-                            Name = documentSnapshot.getString("name");
-                            facultyID = documentSnapshot.getString("facultyID");
-                            department = documentSnapshot.getString("department");
-                            userRole = documentSnapshot.getString("role");
-                            SharedPreferences sharedPreferences = getSharedPreferences("StudentInfo", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("studentName", Name);
-                            editor.putString("userRole", userRole);
-                            editor.apply();
-                            Toast.makeText(this, "Name: " + userRole + Name + "Faculty ID: " + facultyID + "Department: " + department, Toast.LENGTH_LONG).show();
-                            chat.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    // Navigate to Teacher Chat Activity (Chat functionality)
-                                    Intent intent = new Intent(TeacherMainActivity.this, ChatListActivity.class);
-                                    //  intent.putExtra("subjectID",subjectID);
-                                    //   intent.putExtra("studentPRN",studentPRN);
-                                    intent.putExtra("name",Name);
-                                    intent.putExtra("userRole","teacher");
-                                    //    intent.putExtra("userName",teacherName);
-                                    intent.putExtra("department",department);
-                                    //   intent.putExtra("facultyID",facultyID);
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error fetching data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("Firestore", "Error fetching data: " + e.getMessage());
-                    });
+        // Reference to the user's document
+        db.collection("users").document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Store retrieved data in variables
+                        Name = documentSnapshot.getString("name");
+                        facultyID = documentSnapshot.getString("facultyID");
+                        department = documentSnapshot.getString("department");
+                        userRole = documentSnapshot.getString("role");
+                        SharedPreferences sharedPreferences = getSharedPreferences("TeacherInfo", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("Teachername", Name);
+                        editor.putString("userRole", userRole);
+                        editor.putString("department", department);
+                        editor.apply();
+                        Toast.makeText(this, "Name: " + userRole + Name + "Faculty ID: " + facultyID + "Department: " + department, Toast.LENGTH_LONG).show();
+                        chat.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Navigate to Teacher Chat Activity (Chat functionality)
+                                Intent intent = new Intent(TeacherMainActivity.this, ChatListActivity.class);
+                                //  intent.putExtra("subjectID",subjectID);
+                                //   intent.putExtra("studentPRN",studentPRN);
+                                intent.putExtra("name",Name);
+                                intent.putExtra("userRole","teacher");
+                                intent.putExtra("department",department);
+                                //   intent.putExtra("facultyID",facultyID);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error fetching data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Firestore", "Error fetching data: " + e.getMessage());
+                });
 
         // Set click listeners for buttons
         btnAppointLecture.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +82,9 @@ public class TeacherMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Navigate to AppointLectureActivity
                 Intent intent = new Intent(TeacherMainActivity.this, AppointLectureActivity.class);
+                intent.putExtra("name",Name);
+                intent.putExtra("userRole","teacher");
+                intent.putExtra("department",department);
                 startActivity(intent);
             }
         });
@@ -99,6 +102,9 @@ public class TeacherMainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Navigate to ViewAttendanceActivity
                 Intent intent = new Intent(TeacherMainActivity.this, ViewAttendanceActivity.class);
+                intent.putExtra("name",Name);
+                intent.putExtra("userRole","teacher");
+                intent.putExtra("department",department);
                 startActivity(intent);
             }
         });

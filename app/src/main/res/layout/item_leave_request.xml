@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@android:color/darker_gray"
+    android:background="#D4ABAB"
     android:layout_marginBottom="8dp">
 
     <TextView
@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PRN: 12345"
-        android:textSize="16sp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
         android:textStyle="bold"/>
 
     <TextView
@@ -19,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reason: Medical Leave"
+        android:textColor="@color/black"
         android:textSize="14sp"
         android:paddingTop="4dp"/>
 
@@ -28,16 +30,18 @@
         android:layout_height="wrap_content"
         android:text="Status: Pending"
         android:textSize="14sp"
-        android:textStyle="bold"
+        android:textColor="@color/black"
         android:paddingTop="4dp"/>
 
     <Button
         android:id="@+id/btnViewDoc"
         android:layout_width="wrap_content"
+        android:background="@drawable/button_modiified2"
         android:layout_height="wrap_content"
         android:text="View Document"
         android:padding="4dp"
-        android:layout_marginTop="5dp"/>
+        android:fontFamily="sans-serif-black"
+        android:layout_marginTop="7dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Approve"
+            android:fontFamily="sans-serif-black"
             android:padding="6dp"
+            android:background="@drawable/button_modiified2"
             android:layout_marginEnd="10dp"/>
 
         <Button
@@ -59,6 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Deny"
+            android:fontFamily="sans-serif-black"
+            android:background="@drawable/button_modiified2"
             android:padding="6dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -103,6 +103,10 @@ public class StudentMainActivity extends AppCompatActivity {
         Button button2 = findViewById(R.id.button2);
         button2.setOnClickListener(v -> {
             Intent intent = new Intent(StudentMainActivity.this, StudentMainActivity2.class);
+            intent.putExtra("year",year);
+            intent.putExtra("name",studentName);
+            intent.putExtra("userRole",userRole);
+            intent.putExtra("department",branch);
             startActivity(intent);
         });
 
@@ -136,4 +140,3 @@ public class StudentMainActivity extends AppCompatActivity {
 
 
 }
-

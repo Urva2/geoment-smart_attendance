@@ -9,8 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Leave Requests"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:textStyle="bold"
+        android:fontFamily="sans-serif-black"
+       android:textColor="@color/black"
         android:paddingBottom="10dp"/>
 
     <!-- EditText for Branch -->
@@ -18,7 +20,8 @@
         android:id="@+id/editBranch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Branch (e.g., IT)"
+        android:background="@drawable/edittext2"
+        android:hint="Enter Branch"
         android:inputType="text"/>
 
     <!-- EditText for Year -->
@@ -26,8 +29,9 @@
         android:id="@+id/editYear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Year (e.g., FY)"
+        android:hint="Enter Year"
         android:inputType="text"
+        android:background="@drawable/edittext2"
         android:layout_marginTop="8dp"/>
 
     <!-- Fetch Requests Button -->
@@ -36,7 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Fetch Requests"
-        android:layout_marginTop="10dp"/>
+        android:background="@drawable/button_modified"
+        android:layout_marginTop="13dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

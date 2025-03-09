@@ -4,34 +4,77 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/appsback"
-    android:padding="16dp">
+    android:padding="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/ff6b6b"
+        >
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="ENTER YOUR DETAILS"
+            android:fontFamily="sans-serif-black"
+            android:padding="5dp"
+            android:gravity="center"
+            android:textSize="35dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/header_image"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:textSize="40dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:text="YOUR CAMPUS,YOUR LECTURES,YOUR WAY!"
+        />
+
+
 
     <!-- Year Spinner -->
+
+
     <TextView
         android:id="@+id/year_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Year"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="15dp"
         android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/spinner_year"
         android:layout_width="match_parent"
+        android:background="@drawable/spinner_modified"
         android:layout_height="wrap_content"
         android:entries="@array/year_options"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="10dp"
+
+        />
 
     <!-- Branch Spinner -->
     <TextView
+
+        android:layout_marginTop="0dp"
         android:id="@+id/tv_branch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:fontFamily="sans-serif-black"
+        android:layout_marginBottom="5dp"
         android:text="Select Branch"
         android:textSize="16sp" />
     <Spinner
         android:id="@+id/spinner_branch"
         android:layout_width="match_parent"
+        android:background="@drawable/spinner_modified"
         android:layout_height="wrap_content"
         android:entries="@array/branch_options"
         android:layout_marginBottom="16dp" />
@@ -42,8 +85,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
         android:hint="Enter name "
-        android:background="@drawable/edittext"
+        android:background="@drawable/edittext2"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="16dp" />
 
@@ -52,9 +97,11 @@
         android:id="@+id/et_prn"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="9dp"
         android:hint="Enter prn"
-        android:background="@drawable/edittext"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
+        android:background="@drawable/edittext2"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="16dp" />/>
 
@@ -63,9 +110,10 @@
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:background="@drawable/rounded_button"
-        android:layout_marginBottom="16dp" />
+        android:text="Save details"
+        android:backgroundTint="#FD8A8A"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp" />
 
     <!-- Student Book Lecture Button -->
 

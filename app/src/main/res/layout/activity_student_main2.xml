@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/appsback"
     android:padding="16dp">
 
     <!-- PRN EditText (Now Non-Editable) -->
@@ -12,7 +13,7 @@
         android:hint="Fetching PRN..."
         android:focusable="false"
         android:clickable="false"
-        android:background="@android:color/darker_gray"
+        android:background="@drawable/edittext2"
         android:textColor="#000000" />
 
     <!-- Fetch PRN Button -->
@@ -22,11 +23,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/prnEditText"
         android:layout_marginTop="8dp"
+        android:background="@drawable/button_modified"
+        android:textColor="@color/black"
         android:text="Fetch PRN" />
 
     <!-- Subject Name EditText -->
     <EditText
         android:id="@+id/editText2"
+        android:background="@drawable/edittext2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/fetchPRNButton"
@@ -37,6 +41,7 @@
     <!-- Subject ID EditText -->
     <EditText
         android:id="@+id/editText3"
+        android:background="@drawable/edittext2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editText2"
@@ -51,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editText3"
         android:layout_marginTop="8dp"
+        android:background="@drawable/button_modified"
         android:text="Show Lecture Details"
         android:visibility="gone" />
 
@@ -70,6 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/button_modified"
+        android:textColor="@color/black"
         android:layout_marginTop="16dp"
         android:text="Book" />
 

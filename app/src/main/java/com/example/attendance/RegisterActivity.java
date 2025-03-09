@@ -11,7 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.provider.Settings;
+import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
@@ -25,7 +26,7 @@ import java.util.concurrent.Executor;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText idEditText, passwordEditText;
+    private EditText idEditText, passwordEditText, teacherIdEditText;
     private RadioGroup roleRadioGroup;
     private Button nextButton, registerFingerprintButton;
     private ImageView passwordToggle;
@@ -45,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         idEditText = findViewById(R.id.idEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        teacherIdEditText = findViewById(R.id.teacherIdEditText);
         roleRadioGroup = findViewById(R.id.roleRadioGroup);
         nextButton = findViewById(R.id.nextButton);
         registerFingerprintButton = findViewById(R.id.registerFingerprintButton);
@@ -52,17 +54,14 @@ public class RegisterActivity extends AppCompatActivity {
         tvSignInLink = findViewById(R.id.tvSignInLink);
         errorTextView = findViewById(R.id.errorTextView);
 
-        registerFingerprintButton.setVisibility(View.GONE);
-        tvSignInLink.setOnClickListener(view -> navigateToSignIn());
-
         roleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton selectedRoleButton = findViewById(checkedId);
-            if (selectedRoleButton.getText().toString().equals("Student")) {
-                registerFingerprintButton.setVisibility(View.VISIBLE);
-                nextButton.setEnabled(false);
-            } else {
-                registerFingerprintButton.setVisibility(View.GONE);
-                nextButton.setEnabled(true);
+            if (selectedRoleButton.getText().toString().equals("Teacher")) {
+                teacherIdEditText.setVisibility(View.VISIBLE);  // Show Teacher ID input
+                registerFingerprintButton.setVisibility(View.GONE);  // Hide fingerprint button
+            } else if (selectedRoleButton.getText().toString().equals("Student")) {
+                teacherIdEditText.setVisibility(View.GONE);  // Hide Teacher ID input
+                registerFingerprintButton.setVisibility(View.VISIBLE);  // Show fingerprint button
             }
         });
 
@@ -83,9 +82,115 @@ public class RegisterActivity extends AppCompatActivity {
         nextButton.setOnClickListener(v -> registerUser());
     }
 
-    private void navigateToSignIn() {
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
+    private void registerUser() {
+        String id = idEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+        int selectedRoleId = roleRadioGroup.getCheckedRadioButtonId();
+        String teacherId = teacherIdEditText.getText().toString().trim();
+        String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        errorTextView.setVisibility(View.GONE);
+        errorTextView.setText("");
+
+        StringBuilder errorMessages = new StringBuilder();
+
+        if (id.isEmpty()) {
+            errorMessages.append("• Email is required\n");
+        }
+
+        String passwordError = checkPasswordStrength(password);
+        if (passwordError != null) {
+            errorMessages.append(passwordError).append("\n");
+        }
+
+        if (selectedRoleId == -1) {
+            errorMessages.append("• Please select a role\n");
+        }
+
+        RadioButton selectedRoleButton = findViewById(selectedRoleId);
+        String selectedRole = selectedRoleButton.getText().toString();
+
+        if (selectedRole.equals("Teacher")) {
+            if (teacherId.isEmpty() || teacherId.length() != 5 || !teacherId.matches("\\d+")) {
+                errorMessages.append("• Incorrect TeacherID\n");
+            } else {
+                validateTeacherIdFromDatabase(teacherId, id, password, selectedRole);
+                return; // Exit to wait for database validation
+            }
+        }
+
+        if (selectedRole.equals("Student") && !isFingerprintRegistered) {
+            errorMessages.append("• Please register your fingerprint before submitting\n");
+        }
+
+        if (errorMessages.length() > 0) {
+            errorTextView.setText(errorMessages.toString().trim());
+            errorTextView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        // Proceed with Firebase registration for valid data
+        registerWithFirebase(id, password, selectedRole);
+    }
+    private void validateTeacherIdFromDatabase(String teacherId, String id, String password, String role) {
+        firestore.collection("teacherid")
+                .whereEqualTo("id", teacherId) // Query the "id" field
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        // Teacher ID exists, proceed with registration
+                        registerWithFirebase(id, password, role);
+                    } else {
+                        // Teacher ID does not exist, show error
+                        errorTextView.setText("• Invalid Teacher ID. Please contact admin.");
+                        errorTextView.setVisibility(View.VISIBLE);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    errorTextView.setText("• Error verifying Teacher ID. Please try again later.");
+                    errorTextView.setVisibility(View.VISIBLE);
+                });
+    }
+    private void registerWithFirebase(String id, String password, String role) {
+        mAuth.createUserWithEmailAndPassword(id, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                            storeUserDataInFirestore(user.getUid(), user.getEmail(), role, deviceId);
+                            Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RegisterActivity.this, StudentMainActivity1.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                        errorTextView.setText("• " + errorMessage);
+                        errorTextView.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
+
+
+    private String checkPasswordStrength(String password) {
+        if (password.isEmpty()) return "• Password is required";
+        if (password.length() < 8) return "• Password must be at least 8 characters long";
+        boolean hasUppercase = false, hasLowercase = false, hasDigit = false, hasSpecialChar = false;
+        String specialCharacters = "@#$%^&+=!";
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUppercase = true;
+            if (Character.isLowerCase(c)) hasLowercase = true;
+            if (Character.isDigit(c)) hasDigit = true;
+            if (specialCharacters.contains(String.valueOf(c))) hasSpecialChar = true;
+        }
+
+        if (!hasUppercase) return "• Password must contain at least one uppercase letter (A-Z)";
+        if (!hasLowercase) return "• Password must contain at least one lowercase letter (a-z)";
+        if (!hasDigit) return "• Password must contain at least one number (0-9)";
+        if (!hasSpecialChar) return "• Password must contain at least one special character (@, #, $, etc.)";
+
+        return null;
     }
 
     private void registerFingerprint() {
@@ -128,106 +233,22 @@ public class RegisterActivity extends AppCompatActivity {
         biometricPrompt.authenticate(promptInfo);
     }
 
-    private void registerUser() {
-        String id = idEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
-        int selectedRoleId = roleRadioGroup.getCheckedRadioButtonId();
-
-        errorTextView.setVisibility(View.GONE);
-        errorTextView.setText("");
-
-        StringBuilder errorMessages = new StringBuilder();
-
-        if (id.isEmpty()) {
-            errorMessages.append("• Email is required\n");
-        }
-
-        String passwordError = checkPasswordStrength(password);
-        if (passwordError != null) {
-            errorMessages.append(passwordError).append("\n");
-        }
-
-        if (selectedRoleId == -1) {
-            errorMessages.append("• Please select a role\n");
-        }
-
-        if (errorMessages.length() > 0) {
-            errorTextView.setText(errorMessages.toString().trim());
-            errorTextView.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        RadioButton selectedRoleButton = findViewById(selectedRoleId);
-        String selectedRole = selectedRoleButton.getText().toString();
-
-        if (selectedRole.equals("Student") && !isFingerprintRegistered) {
-            Toast.makeText(this, "Please register your fingerprint before submitting", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        mAuth.createUserWithEmailAndPassword(id, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            storeUserDataInFirestore(user.getUid(), user.getEmail(), selectedRole);
-                            Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-
-                            // Redirect based on role
-                            Intent intent;
-                            if (selectedRole.equals("Teacher")) {
-                                intent = new Intent(RegisterActivity.this, TeacherMainActivity1.class); // Change this to the correct teacher activity
-                            } else {
-                                intent = new Intent(RegisterActivity.this, StudentMainActivity1.class);
-                            }
-
-                            startActivity(intent);
-                            finish();
-                        }
-                    } else {
-                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Unknown error";
-                        errorTextView.setText("• " + errorMessage);
-                        errorTextView.setVisibility(View.VISIBLE);
-                    }
-                });
-    }
-
-    private String checkPasswordStrength(String password) {
-        if (password.isEmpty()) return "• Password is required";
-        if (password.length() < 8) return "• Password must be at least 8 characters long";
-        boolean hasUppercase = false, hasLowercase = false, hasDigit = false, hasSpecialChar = false;
-        String specialCharacters = "@#$%^&+=!";
-
-        for (char c : password.toCharArray()) {
-            if (Character.isUpperCase(c)) hasUppercase = true;
-            if (Character.isLowerCase(c)) hasLowercase = true;
-            if (Character.isDigit(c)) hasDigit = true;
-            if (specialCharacters.contains(String.valueOf(c))) hasSpecialChar = true;
-        }
-
-        if (!hasUppercase) return "• Password must contain at least one uppercase letter (A-Z)";
-        if (!hasLowercase) return "• Password must contain at least one lowercase letter (a-z)";
-        if (!hasDigit) return "• Password must contain at least one number (0-9)";
-        if (!hasSpecialChar) return "• Password must contain at least one special character (@, #, $, etc.)";
-
-        return null;
-    }
-
-    private void storeUserDataInFirestore(String userId, String email, String role) {
-        User user = new User(email, role);
+    private void storeUserDataInFirestore(String userId, String email, String role, String deviceId) {
+        User user = new User(email, role, deviceId);
         firestore.collection("users").document(userId).set(user).addOnFailureListener(e -> {
             errorTextView.setText("• Error saving user data");
             errorTextView.setVisibility(View.VISIBLE);
         });
     }
-
     public static class User {
         private String email;
         private String role;
+        private String deviceId; // Add deviceId
 
-        public User(String email, String role) {
+        public User(String email, String role, String deviceId) {
             this.email = email;
             this.role = role;
+            this.deviceId = deviceId; // Initialize deviceId
         }
 
         public String getEmail() {
@@ -237,5 +258,10 @@ public class RegisterActivity extends AppCompatActivity {
         public String getRole() {
             return role;
         }
+
+        public String getDeviceId() {
+            return deviceId; // Getter for deviceId
+        }
     }
+
 }

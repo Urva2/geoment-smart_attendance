@@ -1,10 +1,14 @@
 package com.example.attendance;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -34,10 +38,10 @@ public class ViewAttendanceActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private AttendanceAdapter attendanceAdapter;
     private List<Attendance> attendanceList;
-
+    private Spinner spinnerBranch, spinnerYear;
     // Launcher to get the user-selected file URI
     private ActivityResultLauncher<Intent> saveFileLauncher;
-
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,16 +49,24 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
-
+        // sharedPreferences = getSharedPreferences("TeacherInfo", Context.MODE_PRIVATE);
+        String teacherName =  getIntent().getStringExtra("name");
+        String department = getIntent().getStringExtra("department");
+        TextView textViewGreeting = findViewById(R.id.textViewGreeting);
+        TextView textViewDepartment = findViewById(R.id.textViewDepartment);
+// Set the greeting text
+        textViewGreeting.setText("Hello, " + teacherName);
+        textViewDepartment.setText("Department: " + department);
+        Toast.makeText(ViewAttendanceActivity.this, ""+department, Toast.LENGTH_SHORT).show();
         // Initialize Views
-        branchEditText = findViewById(R.id.branchEditText);
-        yearEditText = findViewById(R.id.yearEditText);
+        // branchEditText = findViewById(R.id.branchEditText);
+        // yearEditText = findViewById(R.id.yearEditText);
         subjectEditText = findViewById(R.id.subjectEditText);
         subjectIdEditText = findViewById(R.id.subjectIdEditText);
         submitButton = findViewById(R.id.submitButton);
         exportPdfButton = findViewById(R.id.exportPdfButton);
         attendanceRecyclerView = findViewById(R.id.attendanceRecyclerView);
-
+        spinnerYear = findViewById(R.id.spinnerYear);
         // Initialize RecyclerView
         attendanceList = new ArrayList<>();
         attendanceAdapter = new AttendanceAdapter(attendanceList);
@@ -76,18 +88,16 @@ public class ViewAttendanceActivity extends AppCompatActivity {
 
         // Submit Button Click Listener
         submitButton.setOnClickListener(view -> {
-            String branch = branchEditText.getText().toString().trim();
-            String year = yearEditText.getText().toString().trim();
+            String year = spinnerYear.getSelectedItem().toString().trim();
             String subject = subjectEditText.getText().toString().trim();
             String subjectId = subjectIdEditText.getText().toString().trim();
 
-            if (branch.isEmpty() || year.isEmpty() || subject.isEmpty() || subjectId.isEmpty()) {
+            if (year.isEmpty() || subject.isEmpty() || subjectId.isEmpty()) {
                 Toast.makeText(ViewAttendanceActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
-                fetchAttendanceData(branch, year, subject, subjectId);
+                checkIfLectureExists(department, year, subject, subjectId);
             }
         });
-
         // Export PDF Button Click Listener
         exportPdfButton.setOnClickListener(view -> {
             if (attendanceList.isEmpty()) {
@@ -97,11 +107,29 @@ public class ViewAttendanceActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void fetchAttendanceData(String branch, String year, String subject, String subjectId) {
+    private void checkIfLectureExists(String department, String year, String subject, String subjectId) {
+        db.collection("appointmentdetails")
+                .document(department)
+                .collection(year)
+                .document(subject)
+                .collection(subjectId)
+                .document(subjectId)  // Checking if the subjectID document exists
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Subject and Subject ID exist, proceed to fetch attendance
+                        fetchAttendanceData(department, year, subject, subjectId);
+                    } else {
+                        Toast.makeText(this, "Lecture not appointed. Cannot fetch attendance.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Error checking lecture appointment.", Toast.LENGTH_SHORT).show());
+    }
+    private void fetchAttendanceData(String department, String year, String subject, String subjectId) {
         // Fetch PRNs and Names from studentdetails collection
         db.collection("studentdetails")
-                .document(branch)
+                .document(department)
                 .collection(year)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -114,14 +142,14 @@ public class ViewAttendanceActivity extends AppCompatActivity {
                             names.add(document.getString("name"));
                         }
 
-                        fetchAttendanceDetails(prns, names, branch, year, subject, subjectId);
+                        fetchAttendanceDetails(prns, names, department, year, subject, subjectId);
                     } else {
                         Toast.makeText(ViewAttendanceActivity.this, "Error fetching student details", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void fetchAttendanceDetails(List<String> prns, List<String> names, String branch, String year, String subject, String subjectId) {
+    private void fetchAttendanceDetails(List<String> prns, List<String> names, String department, String year, String subject, String subjectId) {
         attendanceList.clear();
 
         for (int i = 0; i < prns.size(); i++) {
@@ -129,7 +157,7 @@ public class ViewAttendanceActivity extends AppCompatActivity {
             String name = names.get(i);
 
             db.collection("attendancedetails")
-                    .document(branch)
+                    .document(department)
                     .collection(year)
                     .document(subject)
                     .collection(subjectId)

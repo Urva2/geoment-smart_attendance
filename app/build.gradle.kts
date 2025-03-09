@@ -62,6 +62,6 @@ dependencies {
     implementation("androidx.biometric:biometric:1.1.0")
     implementation("com.cloudinary:cloudinary-android:3.0.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.3") // Required for network requests
-
+    implementation("androidx.cardview:cardview:1.0.0")
 
 }

@@ -109,6 +109,7 @@ public class TeacherMainActivity1 extends AppCompatActivity {
                         // Successfully saved in teacherData, now update users collection
                         Map<String, Object> updateData = new HashMap<>();
                         updateData.put("facultyID", facultyID);
+                        updateData.put("name", name);
                         updateData.put("department", department);
 
                         db.collection("users").document(userID)

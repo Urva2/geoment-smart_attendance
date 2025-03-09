@@ -2,20 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/appsback"
     android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/chatToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_light"
+        android:background="@color/ff6b6b"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <TextView
             android:id="@+id/tvSubjectName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Subject"
-            android:textSize="18sp"
-            android:textColor="@color/white"
+            android:text="Chat"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-black"
             android:layout_gravity="center"/>
     </androidx.appcompat.widget.Toolbar>
     <androidx.recyclerview.widget.RecyclerView
@@ -40,7 +42,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:hint="Type a message..."
-            android:background="@drawable/rounded_edittext"
+            android:textColor="@color/black"
+            android:background="@drawable/edittext2"
             android:drawableStart="@android:drawable/ic_dialog_email"
             android:padding="10dp"/>
 

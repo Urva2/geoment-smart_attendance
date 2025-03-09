@@ -57,7 +57,7 @@
             android:hint="🔒Password"
             android:background="@drawable/edittext"
             android:inputType="textPassword"
-             />
+            />
 
         <ImageView
             android:id="@+id/passwordToggle"
@@ -112,6 +112,16 @@
         android:backgroundTint="#FD8A8A"
         android:textColor="#272727"
         android:layout_marginTop="-10dp"/>
+    <EditText
+        android:id="@+id/teacherIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Teacher ID"
+        android:visibility="gone"
+        android:background="@drawable/edittext"
+        android:layout_marginTop="10dp"
+        android:inputType="text"
+        android:padding="16dp"/>
 
     <!-- Register Button -->
     <Button

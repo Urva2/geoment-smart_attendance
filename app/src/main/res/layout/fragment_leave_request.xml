@@ -4,15 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#FFFFFF">
+    android:background="@drawable/appsback">
 
     <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Leave Request Form"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:fontFamily="sans-serif-black"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_gravity="center"
         android:paddingBottom="10dp"/>
 
@@ -23,7 +25,8 @@
         android:layout_height="wrap_content"
         android:hint="Select Start Date"
         android:focusable="false"
-        android:background="@android:drawable/editbox_background"
+        android:fontFamily="sans-serif-black"
+        android:background="@drawable/edittext2"
         android:drawableRight="@android:drawable/ic_menu_today"
         android:padding="12dp"/>
 
@@ -34,7 +37,8 @@
         android:layout_height="wrap_content"
         android:hint="Select End Date"
         android:focusable="false"
-        android:background="@android:drawable/editbox_background"
+        android:fontFamily="sans-serif-black"
+        android:background="@drawable/edittext2"
         android:drawableRight="@android:drawable/ic_menu_today"
         android:padding="12dp"
         android:layout_marginTop="10dp"/>
@@ -44,28 +48,32 @@
         android:id="@+id/editReason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
         android:hint="Enter Reason for Leave"
-        android:background="@android:drawable/editbox_background"
+        android:background="@drawable/edittext2"
         android:padding="12dp"
         android:layout_marginTop="10dp"/>
 
     <!-- Select PDF Button -->
+
+    <!-- Selected PDF Name -->
     <Button
         android:id="@+id/btnSelectPdf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_modified"
         android:text="Select PDF"
-        android:backgroundTint="#6200EE"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="10dp"/>
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/black" />
 
-    <!-- Selected PDF Name -->
     <TextView
         android:id="@+id/txtPdfName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No file selected"
         android:textSize="14sp"
+        android:fontFamily="sans-serif-black"
         android:visibility="gone"
         android:textColor="#6200EE"
         android:layout_marginTop="5dp"/>
@@ -84,9 +92,12 @@
         android:id="@+id/btnSubmitLeave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:background="@drawable/button_modified"
         android:text="Submit Leave Request"
-        android:backgroundTint="#388E3C"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginBottom="2dp"
+
+        android:textColor="@color/black" />
 
 </LinearLayout>
