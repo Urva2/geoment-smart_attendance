@@ -63,7 +63,11 @@
 ---
 
 ## Project Structure
-GEOMENT/ ├── app/        # Android Studio project files ├── images/     # Screenshots and banners ├── demo/       # Demo video or GIF ├── README.md └── ...
+GEOMENT/ ├── app/        # Android Studio project files
+         ├── images/     # Screenshots and banners
+         ├── demo/       # Demo video or GIF
+         ├── README.md 
+         └── ...
 
 ---
 
@@ -83,6 +87,6 @@ GEOMENT/ ├── app/        # Android Studio project files ├── images/ 
 ---
 
 ## Authors
-- *Urv Patel* – [GitHub Profile](https://github.com/urvpatel)  
+- *Urv Patel* – [GitHub Profile](https://github.com/urva2)  
 - *Smit Gandhi* – [GitHub Profile](https://github.com/smitgandhi)  
 - *Ankit Jethava* – [GitHub Profile](https://github.com/ankitjethava)
