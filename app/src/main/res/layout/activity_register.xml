@@ -1,56 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    android:orientation="vertical"
+    android:background="@drawable/login_reg"
+    android:padding="16dp">
 
-    <!-- ID Input Field -->
-    <EditText
-        android:id="@+id/idEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter ID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="16dp"/>
-
-    <!-- Password Input Field -->
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Create Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/idEditText"
-        android:padding="16dp"/>
-
-    <!-- Role Selection Spinner -->
-    <Spinner
-        android:id="@+id/roleSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
-        android:padding="16dp"
-        android:entries="@array/role_array"
-        />
-
-    <!-- Submit Button -->
-    <Button
-        android:id="@+id/registerButton"
+    <TextView
+        android:id="@+id/heading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/roleSpinner"
-        android:layout_marginTop="16dp"
-        android:padding="12dp"/>
+        android:layout_marginTop="300dp"
+        android:gravity="start"
+        android:text="Hello,"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/heading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Register Now !"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold" />
+
+    <!-- Email Input -->
+    <EditText
+        android:id="@+id/idEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext"
+        android:hint="📩Email"
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:layout_marginTop="10dp" />
+
+    <!-- Password Input with Toggle -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edittext">
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="🔒Password"
+            android:background="@drawable/edittext"
+            android:inputType="textPassword"
+            />
+
+        <ImageView
+            android:id="@+id/passwordToggle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/toggle2"
+            android:contentDescription="Toggle Password"
+            android:padding="0dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- Error Message Display -->
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FF0000"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:paddingTop="5dp" />
+
+    <!-- Role Selection -->
+    <RadioGroup
+        android:id="@+id/roleRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="0dp">
+
+        <RadioButton
+            android:id="@+id/studentRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Student" />
+
+        <RadioButton
+            android:id="@+id/teacherRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teacher"
+            android:layout_marginStart="16dp" />
+    </RadioGroup>
+    <Button
+        android:id="@+id/registerFingerprintButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Register Fingerprint"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:backgroundTint="#FD8A8A"
+        android:textColor="#272727"
+        android:layout_marginTop="-10dp"/>
+    <EditText
+        android:id="@+id/teacherIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Teacher ID"
+        android:visibility="gone"
+        android:background="@drawable/edittext"
+        android:layout_marginTop="10dp"
+        android:inputType="text"
+        android:padding="16dp"/>
+
+    <!-- Register Button -->
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign up"
+        android:textColor="#272727"
+        android:layout_gravity="center"
+        android:backgroundTint="#FD8A8A"
+        android:layout_marginTop="5dp" />
+
+    <!-- Redirect to Sign In -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvNoAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account?"
+            android:textSize="14sp"
+            android:gravity="start" />
+
+        <TextView
+            android:id="@+id/tvSignInLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="14sp"
+            android:gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onSignInClick" />
+    </LinearLayout>
+</LinearLayout>

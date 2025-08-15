@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/appsback">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leave Request Form"
+        android:textSize="30sp"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:paddingBottom="10dp"/>
+
+    <!-- Start Date -->
+    <EditText
+        android:id="@+id/editStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Start Date"
+        android:focusable="false"
+        android:fontFamily="sans-serif-black"
+        android:background="@drawable/edittext2"
+        android:drawableRight="@android:drawable/ic_menu_today"
+        android:padding="12dp"/>
+
+    <!-- End Date -->
+    <EditText
+        android:id="@+id/editEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select End Date"
+        android:focusable="false"
+        android:fontFamily="sans-serif-black"
+        android:background="@drawable/edittext2"
+        android:drawableRight="@android:drawable/ic_menu_today"
+        android:padding="12dp"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Reason for Leave -->
+    <EditText
+        android:id="@+id/editReason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:hint="Enter Reason for Leave"
+        android:background="@drawable/edittext2"
+        android:padding="12dp"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Select PDF Button -->
+
+    <!-- Selected PDF Name -->
+    <Button
+        android:id="@+id/btnSelectPdf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_modified"
+        android:text="Select PDF"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/txtPdfName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No file selected"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-black"
+        android:visibility="gone"
+        android:textColor="#6200EE"
+        android:layout_marginTop="5dp"/>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Submit Leave Request Button -->
+    <Button
+        android:id="@+id/btnSubmitLeave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:background="@drawable/button_modified"
+        android:text="Submit Leave Request"
+        android:layout_marginBottom="2dp"
+
+        android:textColor="@color/black" />
+
+</LinearLayout>

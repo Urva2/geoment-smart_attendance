@@ -1,25 +1,147 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".ViewAttendanceActivity">
 
-    <EditText
-        android:id="@+id/editTextId"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter ID"
-        android:inputType="text" />
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
-    <Button
-        android:id="@+id/buttonShow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Show" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+            <!-- Greeting -->
+            <TextView
+                android:id="@+id/textViewGreeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello, "
+                android:textSize="35sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:paddingBottom="8dp"/>
+
+            <!-- Department -->
+            <TextView
+                android:id="@+id/textViewDepartment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Department: "
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:gravity="center"
+                android:paddingBottom="16dp" />
+
+            <!-- Year Spinner -->
+            <Spinner
+                android:id="@+id/spinnerYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/spinner_modified"
+                android:entries="@array/year_options"
+                android:minHeight="48dp" />
+
+            <!-- Subject EditText -->
+            <EditText
+                android:id="@+id/subjectEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Enter Subject"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext2"
+                android:minHeight="48dp" />
+
+            <!-- Subject ID EditText -->
+            <EditText
+                android:id="@+id/subjectIdEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Enter Subject ID"
+
+                android:inputType="number"
+                android:background="@drawable/edittext2"
+                android:maxLength="2"
+                android:minHeight="48dp" />
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_modified"
+                android:text="View Attendance" />
+
+            <!-- Column Headers -->
+            <LinearLayout
+                android:id="@+id/Edittexts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:backgroundTint="#EACFCF"
+                android:background="#f0f0f0"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/headerPRN"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="PRN"
+                    android:textColor="@color/black"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/headerName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Name"
+                    android:textColor="@color/black"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/headerAttendance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Attendance"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/attendanceRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Export PDF Button -->
+            <Button
+                android:id="@+id/exportPdfButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:minHeight="48dp"
+                android:background="@drawable/button_modified"
+                android:text="Export PDF" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

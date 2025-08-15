@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/radio_button_selector.xml -->
+<!-- res/drawable/radio_button_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected state (checked) -->
+    <item android:drawable="@color/ff6b6b" android:state_checked="true"/> <!-- Filled color -->
+    <!-- Default state (unchecked) -->
+    <item android:drawable="@android:color/darker_gray" android:state_checked="false"/>
+    <!-- Default color for unselected -->
+    </selector>
