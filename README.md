@@ -33,9 +33,9 @@
 ## Screenshots & Demo
 
 ### Screenshots
-![Login Screen](LoginPage.png)
-![Student Dashboard](./images/student_dashboard.png)
-![Teacher Dashboard](./images/teacher_dashboard.png)
+![Login Screen](LoginScreen.png)
+![Student Dashboard](Student.png)
+![Teacher Dashboard](Teacher.png)
 
 ### Demo GIF / Video
 ![App Demo](./demo/demo.gif) <!-- Or link MP4 -->
