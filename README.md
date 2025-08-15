@@ -3,7 +3,7 @@
 [![Android Studio](https://img.shields.io/badge/Android%20Studio-4.2.0-green)](https://developer.android.com/studio)
 [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)](https://firebase.google.com/)
 
-![GEOMENT Banner](./images/banner.png) <!-- Replace with your banner image -->
+<img src="GEOMENT banner.jpg" alt="Login Screen" width="300">
 
 ---
 
