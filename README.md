@@ -33,7 +33,7 @@
 ## Screenshots & Demo
 
 ### Screenshots
-![Login Screen](./images/login.png)
+![Login Screen](LoginPage.png)
 ![Student Dashboard](./images/student_dashboard.png)
 ![Teacher Dashboard](./images/teacher_dashboard.png)
 
