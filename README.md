@@ -33,9 +33,10 @@
 ## Screenshots & Demo
 
 ### Screenshots
-![Login Screen](LoginScreen.jpg)
-![Student Dashboard](Student.jpg)
-![Teacher Dashboard](Teacher.jpg)
+<img src="LoginScreen.jpg" alt="Login Screen" width="300">
+<img src="Student.jpg" alt="Student Dashboard" width="300">
+<img src="Teacher.jpg" alt="Teacher Dashboard" width="300">
+
 
 ### Demo GIF / Video
 ![App Demo](./demo/demo.gif) <!-- Or link MP4 -->
